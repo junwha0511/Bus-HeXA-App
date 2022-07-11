@@ -33,7 +33,7 @@ class _LinePageState extends State<LinePage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     margin: EdgeInsets.only(bottom: 10),
@@ -65,7 +65,7 @@ class _LinePageState extends State<LinePage> {
               alignment: Alignment.center,
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.amber,
+                color: Colors.blue,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               margin: EdgeInsets.only(bottom: 10),
