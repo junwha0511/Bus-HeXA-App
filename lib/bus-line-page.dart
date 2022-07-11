@@ -17,7 +17,7 @@ class _LinePageState extends State<LinePage> {
     ['233(농소차고지 방면)', '233(농소차고지 방면)', '233(울산과학기술원 방면)']
   ];
 
-  void showDir(context, index) {
+  void buildDir(context, index) {
     showDialog(
         context: context,
         builder: (context) {
@@ -59,7 +59,7 @@ class _LinePageState extends State<LinePage> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              showDir(context, index);
+              buildDir(context, index);
             },
             child: Container(
               alignment: Alignment.center,
