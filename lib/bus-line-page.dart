@@ -17,7 +17,6 @@ class _LinePageState extends State<LinePage> {
     ['233(농소차고지 방면)', '233(농소차고지 방면)', '233(울산과학기술원 방면)']
   ];
 
-  @override
   void ShowDirList(context, index) {
     showDialog(
         context: context,
