@@ -1,6 +1,17 @@
 import 'dart:core';
+import 'package:bus_hexa/main.dart';
 import 'package:flutter/material.dart';
 
+final Map<String, dynamic> busInfo ={'337(삼남신화 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '337(태화강역 방면)':[{'min': 8, 'text': '현대2차'}, {'before': 15, 'text': '농수산'}], 
+  '304(율리방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '304(복합웰컴센터 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '743(태화강역 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '133(꽃바위 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '733(덕하차고지 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
+  '233(농소차고지 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}]};
+final busNo = busInfo.keys.toList();
+final arrivalInfo = busInfo.values.toList();
 class Directionpage extends StatefulWidget {
   const Directionpage({Key? key, required this.title}) : super(key: key);
 
@@ -11,10 +22,6 @@ class Directionpage extends StatefulWidget {
 
 class _DirectionpageState extends State<Directionpage> {
   final _scrollController = ScrollController();
-  final List<String> busNo =['337(삼남신화 방면)', '337(태화강역 방면)', 
-  '304(율리방면)', '304(복합웰컴센터 방면)', '743(태화강역 방면)', 
-  '133(꽃바위 방면)', '743(덕하차고지 방면)', '233(농소차고지 방면)']; 
-  final List<String> arrivalInfo =[''];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +50,15 @@ class _DirectionpageState extends State<Directionpage> {
               child: const Text('정류소명 : 울산과학기술원', style: TextStyle(
                 fontSize: 20, color: Colors.white)),
             ),
-            buildBusinfo()
+            for(var i = 0; i < busNo.length; i++)
+              buildBusinfo(i)
           ],
         ),
     ))));
   }
 }
-Widget buildBusinfo(){
+
+Widget buildBusinfo(index){
   return Container(
               margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
               height: 212,
@@ -66,15 +75,16 @@ Widget buildBusinfo(){
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.blue[400]),
-                    child: const Center(
-                      child: Text('a', style: TextStyle(fontSize: 30, color: Colors.white),),
+                    child:  Center(
+                      child: Text(busNo[index], style: TextStyle(fontSize: 25, color: Colors.white),),
                       ),
                     ),
                   Container(
                     height: 70,
                     width: double.infinity,
-                    child: const Center(
-                      child: Text('b',style: TextStyle(fontSize: 30, color: Colors.black),),
+                    child:  Center(
+                      child: Text(arrivalInfo[index][0]['min'].toString()+'분 후'+'('+arrivalInfo[index][0]['text']+')'
+                      ,textAlign: TextAlign.left ,style: TextStyle(fontSize: 25, color: Colors.black),),
                     ),
                   ),
                   Container(
@@ -84,8 +94,9 @@ Widget buildBusinfo(){
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey[300]
                     ),
-                    child: const Center(
-                      child: Text('c', style: TextStyle(fontSize: 30, color: Colors.black)),
+                    child:  Center(
+                      child: Text(arrivalInfo[index][1]['before'].toString()+'역 전'+'('+arrivalInfo[index][1]['text']+')', 
+                      textAlign: TextAlign.left , style: TextStyle(fontSize: 25, color: Colors.black)),
                     ),
                   )
                 ],
