@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 
 class Directionpage extends StatefulWidget {
@@ -10,6 +11,10 @@ class Directionpage extends StatefulWidget {
 
 class _DirectionpageState extends State<Directionpage> {
   final _scrollController = ScrollController();
+  final List<String> busNo =['337(삼남신화 방면)', '337(태화강역 방면)', 
+  '304(율리방면)', '304(복합웰컴센터 방면)', '743(태화강역 방면)', 
+  '133(꽃바위 방면)', '743(덕하차고지 방면)', '233(농소차고지 방면)']; 
+  final List<String> arrivalInfo =[''];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +25,7 @@ class _DirectionpageState extends State<Directionpage> {
       ),
       body: Scrollbar(
         controller: _scrollController,
-        radius: Radius.circular(10),
+        radius: const Radius.circular(10),
         thickness: 10,
         child: SingleChildScrollView(
         controller: _scrollController,
@@ -38,19 +43,13 @@ class _DirectionpageState extends State<Directionpage> {
               child: const Text('정류소명 : 울산과학기술원', style: TextStyle(
                 fontSize: 20, color: Colors.white)),
             ),
-            returnWidget(),
-            returnWidget(),
-            returnWidget(),
-            returnWidget(),
-            returnWidget(),
-            returnWidget(),
-            returnWidget()
+            buildBusinfo()
           ],
         ),
     ))));
   }
 }
-Widget returnWidget(){
+Widget buildBusinfo(){
   return Container(
               margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
               height: 212,
