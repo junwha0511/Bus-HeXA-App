@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(BusTime());
 
-class MyApp extends StatefulWidget {
+class BusTime extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _BusTimeState createState() => _BusTimeState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _BusTimeState extends State<BusTime> {
   List<Map> _Bustime = [
     {
       'time': '05:35',
