@@ -1,3 +1,4 @@
+import 'package:bus_hexa/direction_page.dart';
 import 'package:flutter/material.dart';
 import 'bus-line-page.dart';
 
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowMaterialGrid: false,
       home: LinePage(),
-      title: 'BusHeXA-line-page',
-    );
+      title: 'BusHeXA-line-page',    
+      );
   }
 }
