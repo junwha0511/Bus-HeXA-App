@@ -2,16 +2,33 @@ import 'dart:core';
 import 'package:bus_hexa/main.dart';
 import 'package:flutter/material.dart';
 
-final Map<String, dynamic> busInfo ={'337(삼남신화 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '337(태화강역 방면)':[{'min': 8, 'text': '현대2차'}, {'before': 15, 'text': '농수산'}], 
-  '304(율리방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '304(복합웰컴센터 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '743(태화강역 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '133(꽃바위 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '733(덕하차고지 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}], 
-  '233(농소차고지 방면)':[{'min': 12, 'text': '현대2차'}, {'before': 37, 'text': '농수산'}]};
-final busNo = busInfo.keys.toList();
-final arrivalInfo = busInfo.values.toList();
+final List<Map<String, dynamic>> busInfo =[
+{'bus_no': '337(삼남신화 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
+'info_2':{'departure': false, 'dep_time': '13:40'}},
+{'bus_no': '337(태화강역 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 8, 'stop_point': '삼남신화'}, 
+'info_2':{'departure': true, 'stop_diff': 21, 'min_left': null, 'stop_point': '강남초등학교'}},
+{'bus_no': '304(율리방면)', 
+'info_1':{'departure': false, 'dep_time': '14:30'},
+'info_2': {'departure': false, 'dep_time': '16:20'}},
+{'bus_no': '304(복합웰컴센터 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
+'info_2':{'departure': true, 'stop_diff': 36, 'min_left': null, 'stop_point': '강남초등학교'}},
+{'bus_no': '743(태화강역 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
+'info_2':{'departure': true, 'stop_diff': 36, 'min_left': null, 'stop_point': '강남초등학교'}},
+{'bus_no': '133(꽃바위 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
+'info_2':{'departure': true, 'stop_diff': 36, 'min_left': null, 'stop_point': '강남초등학교'}},
+{'bus_no': '733(덕하차고지 방면)', 
+'info_1':{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
+'info_2':{'departure': true, 'stop_diff': 36, 'min_left': null, 'stop_point': '강남초등학교'}},
+{'bus_no': '233(농소차고지 방면)', 
+'info_1':{'departure': false, 'dep_time': '14:30'},
+'info_2': {'departure': false, 'dep_time': '16:20'}}
+];
+
 class Directionpage extends StatefulWidget {
   const Directionpage({Key? key, required this.title}) : super(key: key);
 
@@ -50,15 +67,14 @@ class _DirectionpageState extends State<Directionpage> {
               child: const Text('정류소명 : 울산과학기술원', style: TextStyle(
                 fontSize: 20, color: Colors.white)),
             ),
-            for(var i = 0; i < busNo.length; i++)
-              buildBusinfo(i)
+            ...busInfo.map((info) => buildBusinfo(info))
           ],
         ),
     ))));
   }
 }
 
-Widget buildBusinfo(index){
+Widget buildBusinfo(infoMap){
   return Container(
               margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
               height: 212,
@@ -76,15 +92,19 @@ Widget buildBusinfo(index){
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.blue[400]),
                     child:  Center(
-                      child: Text(busNo[index], style: TextStyle(fontSize: 25, color: Colors.white),),
+                      child: Text(infoMap['bus_no'], style: TextStyle(fontSize: 25, color: Colors.white),),
                       ),
                     ),
                   Container(
                     height: 70,
                     width: double.infinity,
                     child:  Center(
-                      child: Text(arrivalInfo[index][0]['min'].toString()+'분 후'+'('+arrivalInfo[index][0]['text']+')'
-                      ,textAlign: TextAlign.left ,style: TextStyle(fontSize: 25, color: Colors.black),),
+                      child: infoMap['info_1']['departure'] == false 
+                      ? Text( infoMap['info_1']['dep_time']+' 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
+                      : infoMap['info_1']['stop_diff'] == null 
+                        ? Text( infoMap['info_1']['min_left'].toString()+'분 후'+'('+infoMap['info_1']['stop_point'] +')', style: TextStyle(fontSize: 25, color: Colors.black),)
+                        : Text( infoMap['info_1']['stop_diff'].toString()+'역 전'+'('+infoMap['info_1']['stop_point']+')'
+                       ,style: TextStyle(fontSize: 25, color: Colors.black),),
                     ),
                   ),
                   Container(
@@ -95,8 +115,11 @@ Widget buildBusinfo(index){
                       color: Colors.grey[300]
                     ),
                     child:  Center(
-                      child: Text(arrivalInfo[index][1]['before'].toString()+'역 전'+'('+arrivalInfo[index][1]['text']+')', 
-                      textAlign: TextAlign.left , style: TextStyle(fontSize: 25, color: Colors.black)),
+                      child: infoMap['info_2']['departure'] == false
+                      ? Text( infoMap['info_2']['dep_time']+' 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
+                      :infoMap['info_2']['stop_diff'] == null
+                        ? Text( infoMap['info_2']['min_left'].toString()+'분 후'+'('+infoMap['info_2']['stop_point']+')', style: TextStyle(fontSize: 25, color: Colors.black),)
+                        :Text( infoMap['info_2']['stop_diff'].toString()+'역 전'+'('+infoMap['info_2']['stop_point']+')', style: TextStyle(fontSize: 25, color: Colors.black),),
                     ),
                   )
                 ],
