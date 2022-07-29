@@ -10,10 +10,10 @@ List<Map<String, dynamic>> busInfo = [];
 
 class Data with ChangeNotifier{
   List busInfo = [];
-  List getBusinfolist() {
-    updateData();
-    return busInfo;
-  }
+  //List getBusinfolist() {
+  //  updateData();
+   // return busInfo;
+ // }
   void updateData() async {
     busInfo = await inputData();
     notifyListeners();

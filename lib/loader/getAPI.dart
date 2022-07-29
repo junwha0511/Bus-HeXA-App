@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:bus_hexa/loader/directionmodel.dart';
+
 
 Future<List<dynamic>> getAPILaneToTracks() async {
   var response = await http
@@ -11,9 +11,7 @@ Future<List<dynamic>> getAPILaneToTracks() async {
   String jsonString = utf8.decode(response.bodyBytes);
   List<dynamic> datas = jsonDecode(jsonString);
   List<dynamic> lists = [];
-  //for(dynamic entry in datas){
-  //  lists.add(LaneToTracks.fromJson(entry));
-  //}
+
   return datas;
 }
 
@@ -25,8 +23,6 @@ Future<List<dynamic>> getAPIUlsanBusArrivalInfos() async {
   String jsonString = utf8.decode(response.bodyBytes);
   List<dynamic> datas = jsonDecode(jsonString);
   List<dynamic> lists = [];
-  //for(dynamic entry in datas){
-  //  lists.add(UlsanBusArrivalInfos.fromJson(entry));
-  //}
+
   return datas;
 }
