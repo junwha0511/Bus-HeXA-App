@@ -1,6 +1,7 @@
 import 'package:bus_hexa/direction_page.dart';
+import 'package:bus_hexa/provider/BusHeXAProvider.dart';
 import 'package:flutter/material.dart';
-import 'bus_line_page.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
@@ -10,8 +11,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowMaterialGrid: false,
-      home: LinePage(),
-      title: 'BusHeXA-line-page',    
+      title: 'BusHeXADirectionpage',
+      home:ChangeNotifierProvider<Data>(
+        create: (context) => Data(),
+        child: Directionpage())  
       );
   }
 }
