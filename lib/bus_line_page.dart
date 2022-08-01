@@ -23,26 +23,25 @@ class _LinePageState extends State<LinePage> {
     ['133(꽃바위 방면)', '133(울산과학기술원 방면)'],
     ['233(농소차고지 방면)', '233(농소차고지 방면)', '233(울산과학기술원 방면)']
   ];
+  List<String> nums=[];
   @override
-  void initState(){
+  initState(){
   //  getlinedata();
     Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-    Future<List<dynamic>> ulsanBusLaneToTracks = getAPILaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
-    laneToTracks.then((value) {});
-    laneToTracks.then((value) {});
-    List<String> numbers;
-    // for (dynamic entry in laneToTracks) {
-    //   if (!this.numbers.contains(entry["route_num"]))
-    //     this.numbers.add(entry["route_num"]);
-    // }
+    Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+
+    laneToTracks.then((value) {
+      for(dynamic entry in value){
+        this.nums.add(entry.busName);
+      }
+    });
+    ulsanBusLaneToTracks.then((value) {});
+    laneToTracks.then((value){
+      print(nums);
+    });
     super.initState();
 
   }
-
-  // void getlinedata() async {
-  // //   this.laneToTracks = await getAPILaneToTracks(LaneToTracks().url);
-  //   this.ulsanBusLaneToTracks = await getAPIUlsanBusLaneToTracks(UlsanBusLaneToTracks().url);
-  // }
 
   void buildDir(context, index) async{
     showDialog(
@@ -55,7 +54,9 @@ class _LinePageState extends State<LinePage> {
               itemCount: direction[index].length,
               itemBuilder: (BuildContext context, int busNum) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    print(laneToTracks);
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(20),

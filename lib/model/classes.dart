@@ -2,24 +2,26 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
-// Future<List<dynamic>> getAPI(url) async {
-//   var response = await http
-//       .get(Uri.parse(url));
-//   var statusCode = response.statusCode;
-//   var responseHeaders = response.headers;
-//   String jsonString = utf8.decode(response.bodyBytes);
-//   List<dynamic> datas = jsonDecode(jsonString);
-//   List<dynamic> lists = [];
-//   for(dynamic entry in datas){
-//     lists.add(classes.fromJson(entry));
-//   }
-//   return lists;
-// }
-
+/*
+class BusHeXA{
+  LaneToTracks laneToTracks;
+  NodeOfLanes nodeOfLanes;
+  PosOfBuses posOfBuses;
+  UlsanBusLaneToTracks ulsanBusLaneToTracks;
+  UlsanBusTimeTables ulsanBusTimeTables;
+  UlsanBusNodeToTracks ulsanBusNodeToTracks;
+  UlsanBusArrivalInfos ulsanBusArrivalInfos;
+  LaneAliases laneAliases;
+  PartOfLanes partOfLanes;
+  MapToAliases mapToAliases;
+  LandmarkAliases landmarkAliases;
+  LandmarkNodes landmarkNodes;
+  LandmarkOfLanes landmarkOfLanes;
+}
+*/
 class LaneToTracks {
   String id;
   String busName;
@@ -237,70 +239,3 @@ class LandmarkOfLanes {
   Map<String, dynamic> toJson() =>
       {'route_key': routeKey, 'landmark_keys': landmarkKeys};
 }
-
-
-
-
-
-
-// class LineAndRoute {
-//   List<String> numbers = [];
-//   List<List<String>> direction = [[], [], [], [], [], []];
-
-//   LineAndRoute() {
-//     this.ApiBusNum();
-//     this.ApiBusRoute();
-//   }
-//   void ApiBusNum() async {
-//     String url =
-//         "http://jhshim.ddns.net/api/ulsanbus_lanetotracks/?format=json";
-//     var response = await http.get(Uri.parse(url));
-//     var statusCode = response.statusCode;
-//     var responseHeaders = response.headers;
-//     String jsonString = utf8.decode(response.bodyBytes);
-//     List<dynamic> buses = jsonDecode(jsonString);
-//     for (Map<String, dynamic> entry in buses) {
-//       if (!this.numbers.contains(entry["route_num"]))
-//         this.numbers.add(entry["route_num"]);
-//     }
-//   }
-// }
-
-//   void ApiBusRoute() async {
-//     int i = 0;
-//     String url = "http://jhshim.ddns.net/api/lanetotracks/?format=json";
-//     var response = await http.get(Uri.parse(url));
-//     var statusCode = response.statusCode;
-//     var responseHeaders = response.headers;
-//     String jsonString = utf8.decode(response.bodyBytes);
-//     List<dynamic> buses = jsonDecode(jsonString);
-//     for (Map<String, dynamic> entry in buses) {
-//       if (entry["id"] == 1 || entry["id"] == 2 || entry["id"] == 3)
-//         this.direction[0].add(entry["bus_name"]);
-//       else if (entry["id"] == 4 || entry["id"] == 5)
-//         this.direction[1].add(entry["bus_name"]);
-//       else if (entry["id"] == 6 || entry["id"] == 11)
-//         this.direction[2].add(entry["bus_name"]);
-//       else if (entry["id"] == 7 || entry["id"] == 12)
-//         this.direction[3].add(entry["bus_name"]);
-//       else if (entry["id"] == 8 || entry["id"] == 13)
-//         this.direction[4].add(entry["bus_name"]);
-//       else
-//         this.direction[5].add(entry["bus_name"]);
-//     }
-//   }
-// }
-
-
-
-// }
-// getAPI() async {
-//   var response = await http
-//       .get(Uri.parse('http://jhshim.ddns.net/api/lanetotracks/?format=json'));
-//   var statusCode = response.statusCode;
-//   var responseHeaders = response.headers;
-//   String jsonString = utf8.decode(response.bodyBytes);
-//   List<dynamic> buses = jsonDecode(jsonString);
-// for (Map<String, dynamic> entry in buses) {
-//   print(entry);
-// }
