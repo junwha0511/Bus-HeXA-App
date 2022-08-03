@@ -1,8 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:html';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(BusTime());
@@ -40,104 +35,78 @@ class deparatureTime extends StatefulWidget {
 class _deparatureTimeState extends State<deparatureTime> {
   List<Map> _busTime = [
     {
-      'hour': 05,
-      'minute': 35,
       'time': '05:35',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 06,
-      'minute': 05,
       'time': '06:05',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 06,
-      'minute': 30,
       'time': '06:30',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 07,
-      'minute': 00,
       'time': '07:00',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 07,
-      'minute': 40,
       'time': '07:40',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 08,
-      'minute': 20,
       'time': '08:20',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 09,
-      'minute': 05,
       'time': '09:05',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 09,
-      'minute': 35,
       'time': '09:35',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 10,
-      'minute': 10,
       'time': '10:10',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 10,
-      'minute': 45,
       'time': '10:45',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 11,
-      'minute': 25,
       'time': '11:25',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 12,
-      'minute': 05,
       'time': '12:05',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'hour': 12,
-      'minute': 40,
       'time': '12:40',
       'busnumber': '337',
       'busdiretion': '삼남 순환',
@@ -148,19 +117,16 @@ class _deparatureTimeState extends State<deparatureTime> {
   var newList = new List.empty(growable: true);
   TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
 
-  void _showTimePicker() {
-    showTimePicker(context: context, initialTime: time).then((value) {
-      setState(() {
-        time = value!;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     for (var i = 0; i < _busTime.length; i++) {
-      if (_busTime[i]['hour'] >= time.hour) {
-        if (_busTime[i]['minute'] >= time.minute) {
+      TimeOfDay listTime = TimeOfDay(
+          hour: int.parse(_busTime[i]['time'].split(":")[0]),
+          minute: int.parse(_busTime[i]['time'].split(":")[1]));
+      if (listTime.hour > time.hour) {
+        newList.add(_busTime[i]);
+      } else if (listTime.hour == time.hour) {
+        if (listTime.minute >= time.minute) {
           newList.add(_busTime[i]);
         }
       }
@@ -204,6 +170,7 @@ class _deparatureTimeState extends State<deparatureTime> {
                                         context: context, initialTime: time)
                                     .then((value) {
                                   setState(() {
+                                    newList = [];
                                     time = value!;
                                   });
                                 });
@@ -244,7 +211,7 @@ class _deparatureTimeState extends State<deparatureTime> {
     return newList
         .map((newList) => DataRow(cells: [
               DataCell(Text(
-                  '${newList['hour'].toString().padLeft(2, '0')}:${newList['minute'].toString().padLeft(2, '0')}')),
+                  '${newList['time'].split(":")[0].toString().padLeft(2, '0')}:${newList['time'].split(":")[1].toString().padLeft(2, '0')}')),
               DataCell(Text(newList['busnumber'])),
               DataCell(Text(newList['busdiretion'])),
               DataCell(Text(newList['route'])),
