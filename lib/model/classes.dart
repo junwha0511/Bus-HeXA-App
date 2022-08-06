@@ -1,35 +1,18 @@
 
 // ignore_for_file: avoid_print
 import 'dart:async';
+import 'package:bus_hexa/constant.dart';
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-/*
-class BusHeXA{
-  LaneToTracks laneToTracks;
-  NodeOfLanes nodeOfLanes;
-  PosOfBuses posOfBuses;
-  UlsanBusLaneToTracks ulsanBusLaneToTracks;
-  UlsanBusTimeTables ulsanBusTimeTables;
-  UlsanBusNodeToTracks ulsanBusNodeToTracks;
-  UlsanBusArrivalInfos ulsanBusArrivalInfos;
-  LaneAliases laneAliases;
-  PartOfLanes partOfLanes;
-  MapToAliases mapToAliases;
-  LandmarkAliases landmarkAliases;
-  LandmarkNodes landmarkNodes;
-  LandmarkOfLanes landmarkOfLanes;
-}
-*/
 class LaneToTracks {
-  String id;
+  int id;
   String busName;
   String routeId;
   String cityCode;
 
   LaneToTracks.fromJson(Map<String, dynamic> json)
-      : id = json['id'].toString(),
+      : id = json['id'],
         busName = json['bus_name'],
         routeId = json['route_id'],
         cityCode = json['city_code'];
@@ -43,8 +26,8 @@ class LaneToTracks {
 }
 
 class NodeOfLanes {
-  String routeKey;
-  String nodeOrder;
+  int routeKey;
+  int nodeOrder;
   String nodeId;
   String nodeName;
 
@@ -63,10 +46,10 @@ class NodeOfLanes {
 }
 
 class PosOfBuses {
-  String routeKey;
+  int routeKey;
   String nodeId;
   String busNum;
-  String nodeOrder;
+  int nodeOrder;
 
   PosOfBuses.fromJson(Map<String, dynamic> json)
       : routeKey = json['route_key'],
@@ -84,20 +67,20 @@ class PosOfBuses {
 }
 
 class UlsanBusLaneToTracks {
-  String id;
-  String routeKey;
+  int id;
+  int routeKey;
   String routeId;
   String routeNum;
-  String routeDirection;
-  String routeClass;
+  int routeDirection;
+  int routeClass;
 
   UlsanBusLaneToTracks.fromJson(Map<String, dynamic> json)
-      : id = json['id'].toString(),
-        routeKey = json['route_key'].toString(),
+      : id = json['id'],
+        routeKey = json['route_key'],
         routeId = json['route_id'],
         routeNum = json['route_num'],
-        routeDirection = json['route_direction'].toString(),
-        routeClass = json['route_class'].toString();
+        routeDirection = json['route_direction'],
+        routeClass = json['route_class'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -110,9 +93,9 @@ class UlsanBusLaneToTracks {
 }
 
 class UlsanBusTimeTables {
-  String routeKeyUsb;
+  int routeKeyUsb;
   String departTime;
-  String departSeq;
+  int departSeq;
 
   UlsanBusTimeTables.fromJson(Map<String, dynamic> json)
       : routeKeyUsb = json['route_key_usb'],
@@ -138,22 +121,33 @@ class UlsanBusNodeToTracks {
 }
 
 class UlsanBusArrivalInfos {
-  String id;
-  String aliasName;
+  int routeKeyUsb;
+  int nodeKeyUsb;
+  int prevStopCnt;
+  int arrivalTime;
+  String vehicleNo;
+  String currentNodeName;
 
   UlsanBusArrivalInfos.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        aliasName = json['alias_name'];
+      : routeKeyUsb = json['route_key_usb'],
+        nodeKeyUsb = json['node_key_usb'],
+        prevStopCnt = json['prev_stop_cnt'],
+        arrivalTime = json['arrival_time'],
+        vehicleNo = json['vehicle_no'],
+        currentNodeName = json['current_node_name'];
 
   Map<String,dynamic> toJson() =>
   {
-    'id':id,
-    'alias_name':aliasName
+    'route_key_usb' : routeKeyUsb,
+    'node_key_usb' : nodeKeyUsb,
+    'prev_stop_cnt' : prevStopCnt,
+    'arrival_time' : arrivalTime,
+    'vehicle_no' : vehicleNo,
+    'current_node_name' : currentNodeName
   };
 }
-
 class LaneAliases {
-  String id;
+  int id;
   String aliasName;
 
   LaneAliases.fromJson(Map<String, dynamic> json)
@@ -164,12 +158,12 @@ class LaneAliases {
 }
 
 class PartOfLanes {
-  String id;
-  String laneKey;
-  String firstNodeKey;
-  String lastNodeKey;
+  int id;
+  int laneKey;
+  int firstNodeKey;
+  int lastNodeKey;
   String partName;
-  String count;
+  int count;
 
   PartOfLanes.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -190,9 +184,9 @@ class PartOfLanes {
 }
 
 class MapToAliases {
-  String laneKey;
-  String count;
-  String aliasKey;
+  int laneKey;
+  int count;
+  int aliasKey;
 
   MapToAliases.fromJson(Map<String, dynamic> json)
       : laneKey = json['lane_key'],
@@ -218,7 +212,7 @@ class LandmarkAliases {
 }
 
 class LandmarkNodes {
-  String aliasKey;
+  int aliasKey;
   String nodeId;
 
   LandmarkNodes.fromJson(Map<String, dynamic> json)
@@ -229,8 +223,8 @@ class LandmarkNodes {
 }
 
 class LandmarkOfLanes {
-  String routeKey;
-  String landmarkKeys;
+  int routeKey;
+  List<int> landmarkKeys;
 
   LandmarkOfLanes.fromJson(Map<String, dynamic> json)
       : routeKey = json['route_key'],
