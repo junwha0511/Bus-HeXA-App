@@ -41,6 +41,10 @@ class Directionpage extends StatefulWidget {
 class _DirectionpageState extends State<Directionpage> {
   final _scrollController = ScrollController();
   @override
+ /*void initState() {    
+    super.initState();
+    
+    }*/
   Widget build(BuildContext context) {
     var busInfo = Provider.of<Data>(context).updateData();
     return Scaffold(
@@ -141,40 +145,27 @@ Widget buildBusinfo(infoMap){
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue[400]),
-                    child:  Center(
-                      child: Text(infoMap['bus_no'], style: TextStyle(fontSize: 25, color: Colors.white),),
-                      ),
-                    ),
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    child:  Center(
-                      child: infoMap['info'] == null
-                      ? Text( '00:00 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
-                      : Text('${infoMap['info']['arrival_time']~/60}분 후 (${infoMap['info']['current_node_name']})'
-                      , style: TextStyle(fontSize: 25, color: Colors.black),)
-                    ),
-                  ),
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[300]
-                    ),
-                    child:  Center(
-                      child: infoMap['info'] == null
-                      ? Text( '00:00 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
-                      : Text('${infoMap['info']['arrival_time']~/60}분 후 (${infoMap['info']['current_node_name']})'
-                      , style: TextStyle(fontSize: 25, color: Colors.black),)
-                    ),
-                  ),
+                  buildBox(Colors.blue[400], true, infoMap),
+                  buildBox(Colors.white, false, infoMap),
+                  buildBox(Colors.grey[300], false, infoMap)
                 ],
               ),);
+}
+
+Widget buildBox(boxcolor, title, infoMap){
+  return Container(
+    height: 70,
+    width: double.infinity,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: boxcolor),
+    child:  Center(
+      child: title == true
+      ? Text(infoMap['bus_no'], style: TextStyle(fontSize: 25, color: Colors.white))
+      : infoMap['info'] == null
+        ? Text( '00:00 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
+        : Text('${infoMap['info']['arrival_time']~/60}분 후 (${infoMap['info']['current_node_name']})'
+        , style: TextStyle(fontSize: 25, color: Colors.black),)
+      )
+  );
 }

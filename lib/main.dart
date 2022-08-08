@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowMaterialGrid: false,
-      title: 'BusHeXADirectionpage',
-      home:ChangeNotifierProvider<Data>(
+      title: 'BusHeXA Directionpage',
+      home: ChangeNotifierProvider<Data>(
         create: (context) => Data(),
         child: Directionpage())  
       );
