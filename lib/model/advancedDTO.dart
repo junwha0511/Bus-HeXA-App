@@ -7,31 +7,31 @@ import 'dart:convert';
 import 'classes.dart';
 
 class DForDirection{
-  Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
-  Future<List<dynamic>> laneAliases = getAPILaneAliases(URL_LANE_ALIASES);
-  Future<List<dynamic>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
-  Future<List<dynamic>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
+  Future<List<LaneToTracks>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
+  Future<List<UlsanBusLaneToTracks>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+  Future<List<LaneAliases>> laneAliases = getAPILaneAliases(URL_LANE_ALIASES);
+  Future<List<UlsanBusArrivalInfos>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
+  Future<List<UlsanBusTimeTables>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
 }
 
 class DForDetail{
-  Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
-  Future<List<dynamic>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
+  Future<List<LaneToTracks>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
+  Future<List<UlsanBusLaneToTracks>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+  Future<List<UlsanBusArrivalInfos>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
+  Future<List<UlsanBusTimeTables>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
   //주요역 정보..
 }
 
 class DForLine{
-  Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
-  Future<List<dynamic>> laneAliases = getAPILaneAliases(URL_LANE_ALIASES);
+  Future<List<LaneToTracks>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
+  Future<List<UlsanBusLaneToTracks>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+  Future<List<LaneAliases>> laneAliases = getAPILaneAliases(URL_LANE_ALIASES);
 }
 
 class DForDeparture{
-  Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
-  Future<List<dynamic>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
-  Future<List<dynamic>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
+  Future<List<LaneToTracks>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
+  Future<List<UlsanBusLaneToTracks>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+  Future<List<UlsanBusArrivalInfos>> ulsanBusArrivalInfos = getAPIUlsanBusArrivalInfos(URL_ULSAN_BUS_ARRIVAL_INFOS);
+  Future<List<UlsanBusTimeTables>> ulsanBusTimeTables = getAPIUlsanBusTimeTables(URL_ULSAN_BUS_TIME_TABLES);
   //경유 노선..
 }

@@ -5,182 +5,182 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bus_hexa/model/classes.dart';
 
-Future<List<dynamic>> getAPILaneToTracks(url) async {
+Future<List<LaneToTracks>> getAPILaneToTracks(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<LaneToTracks> datas = jsonDecode(jsonString);
+  List<LaneToTracks> lists = [];
   for(dynamic entry in datas){
     lists.add(LaneToTracks.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPINodeOfLanes(url) async {
+Future<List<NodeOfLanes>> getAPINodeOfLanes(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<NodeOfLanes> datas = jsonDecode(jsonString);
+  List<NodeOfLanes> lists = [];
   for(dynamic entry in datas){
     lists.add(NodeOfLanes.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIPosOfBuses(url) async {
+Future<List<PosOfBuses>> getAPIPosOfBuses(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<PosOfBuses> datas = jsonDecode(jsonString);
+  List<PosOfBuses> lists = [];
   for(dynamic entry in datas){
     lists.add(PosOfBuses.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIUlsanBusLaneToTracks(url) async {
+Future<List<UlsanBusLaneToTracks>> getAPIUlsanBusLaneToTracks(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<UlsanBusLaneToTracks> datas = jsonDecode(jsonString);
+  List<UlsanBusLaneToTracks> lists = [];
   for(dynamic entry in datas){
     lists.add(UlsanBusLaneToTracks.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIUlsanBusTimeTables(url) async {
+Future<List<UlsanBusTimeTables>> getAPIUlsanBusTimeTables(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<UlsanBusTimeTables> datas = jsonDecode(jsonString);
+  List<UlsanBusTimeTables> lists = [];
   for(dynamic entry in datas){
     lists.add(UlsanBusTimeTables.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIUlsanBusNodeToTracks(url) async {
+Future<List<UlsanBusNodeToTracks>> getAPIUlsanBusNodeToTracks(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<UlsanBusNodeToTracks> datas = jsonDecode(jsonString);
+  List<UlsanBusNodeToTracks> lists = [];
   for(dynamic entry in datas){
     lists.add(UlsanBusNodeToTracks.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIUlsanBusArrivalInfos(url) async {
+Future<List<UlsanBusArrivalInfos>> getAPIUlsanBusArrivalInfos(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<UlsanBusArrivalInfos> datas = jsonDecode(jsonString);
+  List<UlsanBusArrivalInfos> lists = [];
   for(dynamic entry in datas){
     lists.add(UlsanBusArrivalInfos.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPILaneAliases(url) async {
+Future<List<LaneAliases>> getAPILaneAliases(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<LaneAliases> datas = jsonDecode(jsonString);
+  List<LaneAliases> lists = [];
   for(dynamic entry in datas){
     lists.add(LaneAliases.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIPartOfLanes(url) async {
+Future<List<PartOfLanes>> getAPIPartOfLanes(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<PartOfLanes> datas = jsonDecode(jsonString);
+  List<PartOfLanes> lists = [];
   for(dynamic entry in datas){
     lists.add(PartOfLanes.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPIMapToAliases(url) async {
+Future<List<MapToAliases>> getAPIMapToAliases(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<MapToAliases> datas = jsonDecode(jsonString);
+  List<MapToAliases> lists = [];
   for(dynamic entry in datas){
     lists.add(MapToAliases.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPILandmarkAliases(url) async {
+Future<List<LandmarkAliases>> getAPILandmarkAliases(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<LandmarkAliases> datas = jsonDecode(jsonString);
+  List<LandmarkAliases> lists = [];
   for(dynamic entry in datas){
     lists.add(LandmarkAliases.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPILandmarkNodes(url) async {
+Future<List<LandmarkNodes>> getAPILandmarkNodes(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<LandmarkNodes> datas = jsonDecode(jsonString);
+  List<LandmarkNodes> lists = [];
   for(dynamic entry in datas){
     lists.add(LandmarkNodes.fromJson(entry));
   }
   return lists;
 }
 
-Future<List<dynamic>> getAPILandmarkOfLanes(url) async {
+Future<List<LandmarkOfLanes>> getAPILandmarkOfLanes(url) async {
   var response = await http
       .get(Uri.parse(url));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
-  List<dynamic> datas = jsonDecode(jsonString);
-  List<dynamic> lists = [];
+  List<LandmarkOfLanes> datas = jsonDecode(jsonString);
+  List<LandmarkOfLanes> lists = [];
   for(dynamic entry in datas){
     lists.add(LandmarkOfLanes.fromJson(entry));
   }
