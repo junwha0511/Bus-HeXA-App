@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(BusTime());
 
+
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
 
@@ -28,88 +29,47 @@ class _BusTimeState extends State<BusTime> {
 class deparatureTime extends StatefulWidget {
   const deparatureTime({Key? key}) : super(key: key);
 
-  @override
+@override
   State<deparatureTime> createState() => _deparatureTimeState();
 }
 
 class _deparatureTimeState extends State<deparatureTime> {
   List<Map> _busTime = [
+    {'bus': '337(삼남순환)', 'time': '0535', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '337(삼남순환)', 'time': '0605', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '337(삼남순환)', 'time': '0630', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
     {
-      'time': '05:35',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '337(태화강역방면)',
+      'time': '0700',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {'bus': '304(율리방면)', 'time': '0740', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0820', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0905', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0935', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {
+      'bus': '304(복합웰컴센터방면)',
+      'time': '1010',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '06:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(복합웰컴센터방면)',
+      'time': '1045',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '06:30',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(복합웰컴센터방면)',
+      'time': '1125',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '07:00',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(복합웰컴센터방면)',
+      'time': '1205',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '07:40',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '08:20',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '09:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '09:35',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '10:10',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '10:45',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '11:25',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '12:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '12:40',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(복합웰컴센터방면)',
+      'time': '1240',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
   ];
@@ -119,10 +79,11 @@ class _deparatureTimeState extends State<deparatureTime> {
 
   @override
   Widget build(BuildContext context) {
-    for (var i = 0; i < _busTime.length; i++) {
+
+   for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
-          hour: int.parse(_busTime[i]['time'].split(":")[0]),
-          minute: int.parse(_busTime[i]['time'].split(":")[1]));
+          hour: int.parse(_busTime[i]['time'].substring(0, 2)),
+          minute: int.parse(_busTime[i]['time'].substring(2)));
       if (listTime.hour > time.hour) {
         newList.add(_busTime[i]);
       } else if (listTime.hour == time.hour) {
@@ -211,9 +172,9 @@ class _deparatureTimeState extends State<deparatureTime> {
     return newList
         .map((newList) => DataRow(cells: [
               DataCell(Text(
-                  '${newList['time'].split(":")[0].toString().padLeft(2, '0')}:${newList['time'].split(":")[1].toString().padLeft(2, '0')}')),
-              DataCell(Text(newList['busnumber'])),
-              DataCell(Text(newList['busdiretion'])),
+                  '${newList['time'].substring(0, 2).toString().padLeft(2, '0')}:${newList['time'].substring(2).toString().padLeft(2, '0')}')),
+              DataCell(Text(newList['bus'].split("(")[0])),
+              DataCell(Text(newList['bus'].split("(")[1].split(")")[0])),
               DataCell(Text(newList['route'])),
             ]))
         .toList();
