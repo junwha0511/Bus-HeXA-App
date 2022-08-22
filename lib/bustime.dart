@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(BusTime());
 
-
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
 
@@ -28,8 +27,7 @@ class _BusTimeState extends State<BusTime> {
 
 class deparatureTime extends StatefulWidget {
   const deparatureTime({Key? key}) : super(key: key);
-
-@override
+  @override
   State<deparatureTime> createState() => _deparatureTimeState();
 }
 
@@ -79,8 +77,7 @@ class _deparatureTimeState extends State<deparatureTime> {
 
   @override
   Widget build(BuildContext context) {
-
-   for (var i = 0; i < _busTime.length; i++) {
+    for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
           hour: int.parse(_busTime[i]['time'].substring(0, 2)),
           minute: int.parse(_busTime[i]['time'].substring(2)));
