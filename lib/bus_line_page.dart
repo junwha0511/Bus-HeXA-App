@@ -27,8 +27,8 @@ class _LinePageState extends State<LinePage> {
   @override
   initState(){
   //  getlinedata();
-    Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-    Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+    Future<List<dynamic>> laneToTracks = getAPILaneToTracks();
+    Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks();
 
     laneToTracks.then((value) {
       for(dynamic entry in value){

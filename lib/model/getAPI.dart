@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bus_hexa/model/classes.dart';
+import 'package:bus_hexa/constant.dart';
 
-Future<List<LaneToTracks>> getAPILaneToTracks(url) async {
+Future<List<LaneToTracks>> getAPILaneToTracks() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_LANE_TO_TRACKS));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -19,9 +20,9 @@ Future<List<LaneToTracks>> getAPILaneToTracks(url) async {
   return lists;
 }
 
-Future<List<NodeOfLanes>> getAPINodeOfLanes(url) async {
+Future<List<NodeOfLanes>> getAPINodeOfLanes() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_NODE_OF_LANES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -33,9 +34,9 @@ Future<List<NodeOfLanes>> getAPINodeOfLanes(url) async {
   return lists;
 }
 
-Future<List<PosOfBuses>> getAPIPosOfBuses(url) async {
+Future<List<PosOfBuses>> getAPIPosOfBuses() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_POS_OF_BUSES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -47,9 +48,9 @@ Future<List<PosOfBuses>> getAPIPosOfBuses(url) async {
   return lists;
 }
 
-Future<List<UlsanBusLaneToTracks>> getAPIUlsanBusLaneToTracks(url) async {
+Future<List<UlsanBusLaneToTracks>> getAPIUlsanBusLaneToTracks() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_ULSAN_BUS_LANE_TO_TRACKS));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -61,9 +62,9 @@ Future<List<UlsanBusLaneToTracks>> getAPIUlsanBusLaneToTracks(url) async {
   return lists;
 }
 
-Future<List<UlsanBusTimeTables>> getAPIUlsanBusTimeTables(url) async {
+Future<List<UlsanBusTimeTables>> getAPIUlsanBusTimeTables() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_ULSAN_BUS_TIME_TABLES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -75,9 +76,9 @@ Future<List<UlsanBusTimeTables>> getAPIUlsanBusTimeTables(url) async {
   return lists;
 }
 
-Future<List<UlsanBusNodeToTracks>> getAPIUlsanBusNodeToTracks(url) async {
+Future<List<UlsanBusNodeToTracks>> getAPIUlsanBusNodeToTracks() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_ULSAN_BUS_NODE_TO_TRACKS));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -89,9 +90,9 @@ Future<List<UlsanBusNodeToTracks>> getAPIUlsanBusNodeToTracks(url) async {
   return lists;
 }
 
-Future<List<UlsanBusArrivalInfos>> getAPIUlsanBusArrivalInfos(url) async {
+Future<List<UlsanBusArrivalInfos>> getAPIUlsanBusArrivalInfos() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_ULSAN_BUS_ARRIVAL_INFOS));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -103,9 +104,9 @@ Future<List<UlsanBusArrivalInfos>> getAPIUlsanBusArrivalInfos(url) async {
   return lists;
 }
 
-Future<List<LaneAliases>> getAPILaneAliases(url) async {
+Future<List<LaneAliases>> getAPILaneAliases() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_LANE_ALIASES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -117,9 +118,9 @@ Future<List<LaneAliases>> getAPILaneAliases(url) async {
   return lists;
 }
 
-Future<List<PartOfLanes>> getAPIPartOfLanes(url) async {
+Future<List<PartOfLanes>> getAPIPartOfLanes() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_PART_OF_LANES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -131,9 +132,9 @@ Future<List<PartOfLanes>> getAPIPartOfLanes(url) async {
   return lists;
 }
 
-Future<List<MapToAliases>> getAPIMapToAliases(url) async {
+Future<List<MapToAliases>> getAPIMapToAliases() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_MAP_TO_ALIASES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -145,9 +146,9 @@ Future<List<MapToAliases>> getAPIMapToAliases(url) async {
   return lists;
 }
 
-Future<List<LandmarkAliases>> getAPILandmarkAliases(url) async {
+Future<List<LandmarkAliases>> getAPILandmarkAliases() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_LANDMARK_ALIASES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -159,9 +160,9 @@ Future<List<LandmarkAliases>> getAPILandmarkAliases(url) async {
   return lists;
 }
 
-Future<List<LandmarkNodes>> getAPILandmarkNodes(url) async {
+Future<List<LandmarkNodes>> getAPILandmarkNodes() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_LANDMARK_NODES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -173,9 +174,9 @@ Future<List<LandmarkNodes>> getAPILandmarkNodes(url) async {
   return lists;
 }
 
-Future<List<LandmarkOfLanes>> getAPILandmarkOfLanes(url) async {
+Future<List<LandmarkOfLanes>> getAPILandmarkOfLanes() async {
   var response = await http
-      .get(Uri.parse(url));
+      .get(Uri.parse(URL_LANDMARK_OF_LANES));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
