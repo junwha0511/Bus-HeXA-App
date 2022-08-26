@@ -1,8 +1,6 @@
-import 'dart:html';
-import 'dart:indexed_db';
-import '../bustime.dart';
-import '../model/classes.dart';
-import '../model/getAPI.dart';
+import 'package:bus_hexa/model/classes.dart';
+import 'package:bus_hexa/model/getAPI.dart';
+import 'package:bus_hexa/model/getAPI.dart';
 
 // routekey() async {
 //   List timeTableMap = await UlsanBusTimeTables();
@@ -11,59 +9,55 @@ import '../model/getAPI.dart';
 //   return routeKey;
 // }
 
-deparattime() async {
-  List timeTableMap = await UlsanBusTimeTables();
-  List departTime = await List<String>.generate(
-      timeTableMap.length, (index) => timeTableMap[index - 1]["depart_time"]);
+deparatTime() async {
+  List<UlsanBusTimeTables> timeTableMap = await getAPIUlsanBusTimeTables();
+  List<String> departTime = await List<String>.generate(
+      timeTableMap.length, (index) => timeTableMap[index - 1].departTime);
   // var departTime = await Map<String, int>.fromIterable(timeTableMap,
   //     key: (Index) => Index - 1, value: (element) => element["depart_time"]);
   return departTime;
 }
 
-busname() async {
-  List timeTableMap = await UlsanBusTimeTables();
-  List laneToTracks = await LaneToTracks();
-  List busName_list = [];
+busName() async {
+  List<UlsanBusTimeTables> timeTableMap = await getAPIUlsanBusTimeTables();
+  List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
+  List<String> busName_list = [];
   for (int i = 0; i < timeTableMap.length; i++) {
-    Map<int, String> busName_map = {};
     for (int j = 0; j < laneToTracks.length; j++) {
-      if (timeTableMap[i]["route_key"] = laneToTracks[j]["id"]) {
-        busName_map[i] = laneToTracks[j]["bus_name"];
+      if (timeTableMap[i].routeKeyUsb == laneToTracks[j].id) {
+        busName_list.add(laneToTracks[j].busName);
       }
     }
-    busName_list.add(busName_map);
   }
   return busName_list;
 }
 
-landmarkkeys() async {
-  List timeTableMap = await UlsanBusTimeTables();
-  List landmarkLanes = await LandmarkOfLanes();
-  List landmarkNodes = await LandmarkNodes();
-  List landmarkAliases = await LandmarkAliases();
-  List<List> landmark_key_list = [];
+landmarkKeys() async {
+  List<UlsanBusTimeTables> timeTableMap = await getAPIUlsanBusTimeTables();
+  List<LandmarkOfLanes> landmarkLanes = await getAPILandmarkOfLanes();
+  List<LandmarkNodes> landmarkNodes = await getAPILandmarkNodes();
+  List<LandmarkAliases> landmarkAliases = await getAPILandmarkAliases();
+  List<List<int>> landmark_key_list = [];
   for (int i = 0; i < timeTableMap.length; i++) {
-    List landmark_keys = [];
     for (int j = 0; j < landmarkLanes.length; j++) {
-      if (timeTableMap[i]["route_key"] = landmarkLanes[j]["id"]) {
-        landmark_keys.add(landmarkLanes[j]["landmark_keys"]);
+      if (timeTableMap[i].routeKeyUsb == landmarkLanes[j].routeKey) {
+        landmark_key_list.add(landmarkLanes[j].landmarkKeys);
       }
     }
-    landmark_key_list.add(landmark_keys);
   }
   return landmark_key_list;
 }
 
-landmarknodes() async {
-  List landmarkNodes = await LandmarkNodes();
-  List<List> landmark_key_list = await landmarkkeys();
-  List<List> alias_key_list = [];
+landmarkNodes() async {
+  List<LandmarkNodes> landmarkNodes = await getAPILandmarkNodes();
+  List<List<int>> landmark_key_list = await landmarkKeys();
+  List<List<int>> alias_key_list = [];
   for (int i = 0; i < landmark_key_list.length; i++) {
-    List alias_keys = [];
+    List<int> alias_keys = [];
     for (int j = 0; j < landmark_key_list[i].length; j++) {
       for (int k = 0; k < landmarkNodes.length; k++) {
-        if (landmark_key_list[i][j] = landmarkNodes[k]["id"]) {
-          alias_keys.add(landmarkNodes[k]["alias_key"]);
+        if (landmark_key_list[i][j] == landmarkNodes[k].nodeId) {
+          alias_keys.add(landmarkNodes[k].aliasKey);
         }
       }
     }
@@ -72,16 +66,16 @@ landmarknodes() async {
   return alias_key_list;
 }
 
-landmarkaliases() async {
-  List landmarkAliases = await LandmarkAliases();
-  List<List> alias_key_list = await landmarknodes();
-  List<List> alias_name_list = [];
+landmarkAliases() async {
+  List<LandmarkAliases> landmarkAliases = await getAPILandmarkAliases();
+  List<List<int>> alias_key_list = await landmarkNodes();
+  List<List<String>> alias_name_list = [];
   for (int i = 0; i < alias_key_list.length; i++) {
-    List alias_names = [];
+    List<String> alias_names = [];
     for (int j = 0; j < alias_key_list[i].length; j++) {
       for (int k = 0; k < landmarkAliases.length; k++) {
-        if (alias_name_list[i][j] = landmarkAliases[k]["id"]) {
-          alias_names.add(landmarkAliases[k]["alias_name"]);
+        if (alias_name_list[i][j] == landmarkAliases[k].aliasKey) {
+          alias_names.add(landmarkAliases[k].aliasName);
         }
       }
     }
@@ -90,9 +84,9 @@ landmarkaliases() async {
   return alias_name_list;
 }
 
-landmarknames() async {
-  List<List> alias_name_list = await landmarkaliases();
-  List landmark = [];
+landmarkNames() async {
+  List<List<String>> alias_name_list = await landmarkAliases();
+  List<String> landmark = [];
   for (int i = 0; i < alias_name_list.length; i++) {
     String listToString = alias_name_list[i].join(',');
     landmark.add(listToString);
@@ -100,18 +94,23 @@ landmarknames() async {
   return landmark;
 }
 
-bustime() async {
-  List timeTableMap = await UlsanBusTimeTables();
-  List bus = await busname();
-  List time = await deparattime();
-  List landmark = await landmarknames();
-  List _busTime = [];
+busTime() async {
+  List<UlsanBusTimeTables> timeTableMap = await getAPIUlsanBusTimeTables();
+  List<String> bus = await busName();
+  List<String> time = await deparatTime();
+  List<String> landmark = await landmarkNames();
+  List<Map<String, String>> _busTime = [];
   for (int i = 0; i <= timeTableMap.length; i++) {
-    Map data = {};
+    Map<String, String> data = {};
     data["bus"] = bus[i];
     data["time"] = time[i];
     data["route"] = landmark[i];
     _busTime.add(data);
   }
   return _busTime;
+}
+
+void main() async{
+  List a = await busTime();
+  print(a);
 }

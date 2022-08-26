@@ -1,6 +1,8 @@
+import 'package:path/path.dart' as Path;
 import 'package:flutter/material.dart';
-
-void main() => runApp(BusTime());
+import 'package:bus_hexa/busTimeData.dart';
+import 'package:provider/provider.dart';
+import 'package:bus_hexa/provider/busTimeProvider.dart';
 
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
@@ -32,51 +34,12 @@ class deparatureTime extends StatefulWidget {
 }
 
 class _deparatureTimeState extends State<deparatureTime> {
-  List<Map> _busTime = [
-    {'bus': '337(삼남순환)', 'time': '0535', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '337(삼남순환)', 'time': '0605', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '337(삼남순환)', 'time': '0630', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {
-      'bus': '337(태화강역방면)',
-      'time': '0700',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {'bus': '304(율리방면)', 'time': '0740', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0820', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0905', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0935', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {
-      'bus': '304(복합웰컴센터방면)',
-      'time': '1010',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'bus': '304(복합웰컴센터방면)',
-      'time': '1045',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'bus': '304(복합웰컴센터방면)',
-      'time': '1125',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'bus': '304(복합웰컴센터방면)',
-      'time': '1205',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'bus': '304(복합웰컴센터방면)',
-      'time': '1240',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-  ];
-
   var newList = new List.empty(growable: true);
   TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
 
   @override
   Widget build(BuildContext context) {
+    var _busTime = Provider.of<dpt>(context).Data();
     for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
           hour: int.parse(_busTime[i]['time'].substring(0, 2)),

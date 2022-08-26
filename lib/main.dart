@@ -1,3 +1,5 @@
+import 'package:bus_hexa/busTimeData.dart';
+import 'package:bus_hexa/bustime.dart';
 import 'package:bus_hexa/detailed_page.dart';
 import 'package:bus_hexa/direction_page.dart';
 import 'package:flutter/material.dart';
