@@ -212,12 +212,15 @@ class LandmarkAliases {
 class LandmarkNodes {
   int aliasKey;
   String nodeId;
+  int id;
 
   LandmarkNodes.fromJson(Map<String, dynamic> json)
-      : aliasKey = json['alias_key'],
+      : id = json['id'],
+        aliasKey = json['alias_key'],
         nodeId = json['node_id'];
 
-  Map<String, dynamic> toJson() => {'alias_key': aliasKey, 'node_id': nodeId};
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'alias_key': aliasKey, 'node_id': nodeId};
 }
 
 class LandmarkOfLanes {

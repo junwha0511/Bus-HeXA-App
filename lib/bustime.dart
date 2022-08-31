@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bus_hexa/busTimeData.dart';
 import 'package:provider/provider.dart';
 import 'package:bus_hexa/provider/busTimeProvider.dart';
+import 'package:provider/provider.dart';
 
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
@@ -12,17 +13,25 @@ class BusTime extends StatefulWidget {
 }
 
 class _BusTimeState extends State<BusTime> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     var _bus = Provider.of<dpt>(context, listen: false);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'busDeparatureTime',
-      home: deparatureTime(),
       debugShowCheckedModeBanner: false,
       builder: (context, childWidget) {
         return MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: childWidget!);
       },
+      home: deparatureTime(),
     );
   }
 }
@@ -36,10 +45,21 @@ class deparatureTime extends StatefulWidget {
 class _deparatureTimeState extends State<deparatureTime> {
   var newList = new List.empty(growable: true);
   TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
+  // TimeOfDay time = TimeOfDay.now();
 
   @override
+  // var _busTime = Provider.of<dpt>(context).Data();
+  List<Map> _busTime = [
+    {'bus': '337(삼남순환)', 'time': '0535', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '337(삼남순환)', 'time': '0605', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '337(삼남순환)', 'time': '0630', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0740', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0820', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0905', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+    {'bus': '304(율리방면)', 'time': '0935', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+  ];
+
   Widget build(BuildContext context) {
-    var _busTime = Provider.of<dpt>(context).Data();
     for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
           hour: int.parse(_busTime[i]['time'].substring(0, 2)),
@@ -52,7 +72,6 @@ class _deparatureTimeState extends State<deparatureTime> {
         }
       }
     }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('버스출발시간 기준'),

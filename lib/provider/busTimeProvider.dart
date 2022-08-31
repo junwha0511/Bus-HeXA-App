@@ -4,7 +4,7 @@ import 'package:bus_hexa/bustime.dart';
 
 class dpt with ChangeNotifier {
   List<Map<String, dynamic>> _busTime = [];
-  void Data() async {
+  void busTimeData() async {
     _busTime = await busTime();
     notifyListeners();
   }
