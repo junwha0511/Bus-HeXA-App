@@ -108,13 +108,13 @@ class StopInfo {
 
 
 // 기존 정보 활용하여 진행
-Future<Map<int, List<StopInfo>>> constructStopInfo() async {
+Future<Map<LaneToTracks, List<StopInfo>>> constructStopInfo() async {
   Map <int, LaneToTracks> busNoMap= await constructBusNoMap();
   Map<int, NodeOfLanes> unistNodeMap = await constructUNISTNodeMap();
   Map<int, List<PosOfBuses>> posMap = await constructPosMap();
   Map <int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
   Map <int, UlsanBusArrivalInfos> arrivalTimeInfoMap = await constructBusInfoMap();
-  Map<int, List<StopInfo>> stopInfoMap = {};
+  Map<LaneToTracks, List<StopInfo>> stopInfoMap = {};
 
   for (int key in busNoMap.keys) {
     if (unistNodeMap[key] == null) {
@@ -141,7 +141,7 @@ Future<Map<int, List<StopInfo>>> constructStopInfo() async {
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left
 
-    stopInfoMap[key] = stopInfoList;
+    stopInfoMap[busInfo] = stopInfoList;
   }
 
   return stopInfoMap;
@@ -289,6 +289,6 @@ void testStopInfo() async {
   // print(stop);
   // print(stop2);
   // print(nodemaps);
-  Map<int, List<StopInfo>> stopInfoMap = await constructStopInfo();
+  Map<LaneToTracks, List<StopInfo>> stopInfoMap = await constructStopInfo();
   print(stopInfoMap);
 }
