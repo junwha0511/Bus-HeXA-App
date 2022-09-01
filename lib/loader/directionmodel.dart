@@ -97,24 +97,31 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   return posOfBusesMap;
 }
 
+
+
 class StopInfo {
   int? stopLeft;
   int? timeLeft;
-  LaneToTracks bus;
+  
   NodeOfLanes node;
 
-  StopInfo ({required this.node, required this.bus, this.stopLeft, this.timeLeft});
+  StopInfo ({required this.node, this.stopLeft, this.timeLeft});
+}
+class LaneStopInfo {
+  LaneToTracks bus;
+  List<StopInfo> stopInfoList = [];
+
+  LaneStopInfo({required this.bus, stopInfoList});
 }
 
-
 // 기존 정보 활용하여 진행
-Future<Map<LaneToTracks, List<StopInfo>>> constructStopInfo() async {
+Future<List<LaneStopInfo>> constructStopInfo() async {
   Map <int, LaneToTracks> busNoMap= await constructBusNoMap();
   Map<int, NodeOfLanes> unistNodeMap = await constructUNISTNodeMap();
   Map<int, List<PosOfBuses>> posMap = await constructPosMap();
   Map <int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
   Map <int, UlsanBusArrivalInfos> arrivalTimeInfoMap = await constructBusInfoMap();
-  Map<LaneToTracks, List<StopInfo>> stopInfoMap = {};
+  List<LaneStopInfo> laneStopInfoList = [];
 
   for (int key in busNoMap.keys) {
     if (unistNodeMap[key] == null) {
@@ -130,21 +137,21 @@ Future<Map<LaneToTracks, List<StopInfo>>> constructStopInfo() async {
 
     // Calculate stop left by subtract current position from UNIST
     List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(node: routeKey2Node[position.routeKey]!, bus: busInfo, stopLeft: unistNode.nodeOrder - position.nodeOrder)
+      StopInfo(node: routeKey2Node[position.routeKey]!, stopLeft: unistNode.nodeOrder - position.nodeOrder)
     ).toList();
     
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
-    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: routeKey2Node[arrivalTimeInfo.routeKeyUsb]!, bus: busInfo, timeLeft: arrivalTimeInfo.arrivalTime);
+    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: routeKey2Node[arrivalTimeInfo.routeKeyUsb]!, timeLeft: arrivalTimeInfo.arrivalTime);
     
     
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left
 
-    stopInfoMap[busInfo] = stopInfoList;
+    laneStopInfoList.add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
   }
 
-  return stopInfoMap;
+  return laneStopInfoList;
 }
 
 // StopInfo_1() async {
@@ -289,6 +296,6 @@ void testStopInfo() async {
   // print(stop);
   // print(stop2);
   // print(nodemaps);
-  Map<LaneToTracks, List<StopInfo>> stopInfoMap = await constructStopInfo();
-  print(stopInfoMap);
+  List<LaneStopInfo> laneStopInfoList = await constructStopInfo();
+  print(laneStopInfoList);
 }
