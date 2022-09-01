@@ -100,9 +100,10 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
 class StopInfo {
   int? stopLeft;
   int? timeLeft;
+  LaneToTracks bus;
   NodeOfLanes node;
 
-  StopInfo ({required this.node, this.stopLeft, this.timeLeft});
+  StopInfo ({required this.node, required this.bus, this.stopLeft, this.timeLeft});
 }
 
 
@@ -129,12 +130,12 @@ Future<Map<int, List<StopInfo>>> constructStopInfo() async {
 
     // Calculate stop left by subtract current position from UNIST
     List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(node: routeKey2Node[position.routeKey]!, stopLeft: unistNode.nodeOrder - position.nodeOrder)
+      StopInfo(node: routeKey2Node[position.routeKey]!, bus: busInfo, stopLeft: unistNode.nodeOrder - position.nodeOrder)
     ).toList();
     
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
-    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: routeKey2Node[arrivalTimeInfo.routeKeyUsb]!, timeLeft: arrivalTimeInfo.arrivalTime);
+    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: routeKey2Node[arrivalTimeInfo.routeKeyUsb]!, bus: busInfo, timeLeft: arrivalTimeInfo.arrivalTime);
     
     
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
