@@ -2,28 +2,21 @@ import 'package:bus_hexa/model/getAPI.dart';
 import 'package:bus_hexa/model/classes.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
+class StopInfo {
+  int? stopLeft;
+  int? timeLeft;
+  
+  NodeOfLanes node;
 
-// class Station {
-//   int order;
-//   BusLane includedLane;
-//   Station? next;
-//   Station? prev;
-
-//   Station (this.order, this.includedLane, this.next, this.prev);
-// }
-
-// class BusLane {
-//   int id;
-//   String routeId;
-//   String name;
-//   List<Station> stations;
-
-//   BusLane(this.id, this.routeId, this.name, this.stations);
-// }
-
-class Position {
-  Position();
+  StopInfo ({required this.node, this.stopLeft, this.timeLeft});
 }
+class LaneStopInfo {
+  LaneToTracks bus;
+  List<StopInfo> stopInfoList = [];
+
+  LaneStopInfo({required this.bus, stopInfoList});
+}
+
 
 // Key: RouteKey, Value: LaneToTracks object
 // 각 버스의 기본적인 정보
@@ -99,20 +92,6 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
 
 
 
-class StopInfo {
-  int? stopLeft;
-  int? timeLeft;
-  
-  NodeOfLanes node;
-
-  StopInfo ({required this.node, this.stopLeft, this.timeLeft});
-}
-class LaneStopInfo {
-  LaneToTracks bus;
-  List<StopInfo> stopInfoList = [];
-
-  LaneStopInfo({required this.bus, stopInfoList});
-}
 
 // 기존 정보 활용하여 진행
 Future<List<LaneStopInfo>> constructStopInfo() async {
