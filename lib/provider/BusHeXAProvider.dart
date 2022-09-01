@@ -15,7 +15,8 @@ class Data with ChangeNotifier{
    // return busInfo;
  // }
   void updateData() async {
-    busInfo = await TimeInfo();
-    notifyListeners();
+    testStopInfo();
+    // busInfo = await();
+    // notifyListeners();
   }
 }
