@@ -6,9 +6,9 @@ class StopInfo {
   int? stopLeft;
   int? timeLeft;
   
-  NodeOfLanes node;
+  String nodeName;
 
-  StopInfo ({required this.node, this.stopLeft, this.timeLeft});
+  StopInfo ({required this.nodeName, this.stopLeft, this.timeLeft});
 }
 class LaneStopInfo {
   LaneToTracks bus;
@@ -119,7 +119,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   // return laneStopInfoList;
     // Calculate stop left by subtract current position from UNIST
     List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(node: id2Node[position.nodeId]!, stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs())
+      StopInfo(nodeName: id2Node[position.nodeId]!.nodeName, stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs())
     ).toList();
     
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
@@ -129,8 +129,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     //   continue;
     // }
 
-    // StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: name2Node[arrivalTimeInfo.currentNodeName]!, timeLeft: arrivalTimeInfo.arrivalTime);
-    StopInfo? timeLeft;
+    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(nodeName: arrivalTimeInfo.currentNodeName, timeLeft: arrivalTimeInfo.arrivalTime);
 
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left

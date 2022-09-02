@@ -115,9 +115,9 @@ Widget buildBox(boxcolor, title, LaneStopInfo laneStopInfo, int idx){
       child: title == true
       ? Text(laneStopInfo.bus.busName)//, style: TextStyle(fontSize: 25, color: Colors.white))
       : laneStopInfo.stopInfoList[idx].stopLeft == null
-        ? Text( '${laneStopInfo.stopInfoList[idx].timeLeft!/60}분 후 (${laneStopInfo.stopInfoList[idx].node.nodeName})', 
+        ? Text( '${laneStopInfo.stopInfoList[idx].timeLeft!~/60}분 후 (${laneStopInfo.stopInfoList[idx].nodeName})', 
         style: TextStyle(fontSize: 25, color: Colors.black),)
-        : Text('${laneStopInfo.stopInfoList[idx].stopLeft!}역 전 (${laneStopInfo.stopInfoList[idx].node.nodeName})', 
+        : Text('${laneStopInfo.stopInfoList[idx].stopLeft!}역 전 (${laneStopInfo.stopInfoList[idx].nodeName})', 
         style: TextStyle(fontSize: 25, color: Colors.black),)
       )
   );
