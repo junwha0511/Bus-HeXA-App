@@ -1,3 +1,4 @@
+import 'package:bus_hexa/constant.dart';
 import 'package:bus_hexa/model/getAPI.dart';
 import 'package:bus_hexa/model/classes.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,7 @@ Future<Map<int, List<NodeOfLanes>>> constructNodeOfLanesMap() async {
 
   Map<int, List<NodeOfLanes>> nodeOfLanesMap = {};
 
-  for (int i = 1; i <= 14; i++) {
+  for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
     List<NodeOfLanes> nodeOfBus = nodeOfLaneList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -67,7 +68,7 @@ Future<Map<int, NodeOfLanes>> constructUNISTNodeMap() async {
 
   Map<int, NodeOfLanes> unistNodeMap = {};
 
-  for (int i = 1; i <= 14; i++) {
+  for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
     List<NodeOfLanes> nodeOfBus = unistNodes.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -85,7 +86,7 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   List<PosOfBuses> posOfBusesList = await getAPIPosOfBuses();
 
   Map<int, List<PosOfBuses>> posOfBusesMap = {};
-  for (int i = 1; i <= 14; i++) {
+  for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
     List<PosOfBuses> posOfBuses = posOfBusesList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -106,7 +107,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
       await constructBusInfoMap();
   List<LaneStopInfo> laneStopInfoList = [];
 
-  for (int key = 1; key <= 14; key++) {
+  for (int key = N_BUS_MIN; key <= N_BUS_MAX; key++) {
     if (unistNodeMap[key] == null) {
       print("Unexpected error for key: $key");
       continue;
