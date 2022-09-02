@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:bus_hexa/loader/directionmodel.dart';
+import 'package:bus_hexa/loader/direction_loader.dart';
 import 'package:bus_hexa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,8 +76,8 @@ class _DirectionpageState extends State<Directionpage> {
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white)),
                         ),
-                        Consumer(builder:
-                            (BuildContext ctx, Data model, Widget? widget) {
+                        Consumer(builder: (BuildContext ctx,
+                            StopInfoProvider model, Widget? widget) {
                           return Column(
                             children: model.busStopInfo
                                 .map((info) => buildBusinfo(info))

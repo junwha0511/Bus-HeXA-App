@@ -7,13 +7,13 @@ List<Map<String, dynamic>> busInfo = [];
  return Future.delayed(Duration(), () => busInfo);
 }*/
 
-class Data with ChangeNotifier {
+class StopInfoProvider with ChangeNotifier {
   List<LaneStopInfo> busStopInfo = [];
   //List getBusinfolist() {
   //  updateData();
   // return busInfo;
   // }
-  Data() {
+  StopInfoProvider() {
     updateData();
   }
   void updateData() async {

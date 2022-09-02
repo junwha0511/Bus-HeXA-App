@@ -7,17 +7,16 @@ import 'bus_line_page.dart';
 import 'detailed_page.dart';
 
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowMaterialGrid: false,
-      title: 'BusHeXA Directionpage',
-      home: ChangeNotifierProvider<Data>(
-        create: (context) => Data(),
-        child: Directionpage())  
-      );
+        debugShowMaterialGrid: false,
+        title: 'BusHeXA Directionpage',
+        home: ChangeNotifierProvider<StopInfoProvider>(
+            create: (context) => StopInfoProvider(), child: Directionpage()));
   }
 }
