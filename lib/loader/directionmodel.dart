@@ -42,7 +42,7 @@ Future<Map <int, List<NodeOfLanes>>> constructNodeOfLanesMap() async {
 
   Map<int, List<NodeOfLanes>> nodeOfLanesMap = {};
 
-  for (int i = 3; i < 10; i++){
+  for (int i = 1; i <= 14; i++){
     List<NodeOfLanes> nodeOfBus = nodeOfLaneList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -61,7 +61,7 @@ Future<Map<int, NodeOfLanes>> constructUNISTNodeMap() async {
 
   Map<int, NodeOfLanes> unistNodeMap = {};
 
-  for (int i = 3; i < 10; i++){
+  for (int i = 1; i <= 14; i++){
     List<NodeOfLanes> nodeOfBus = unistNodes.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -79,7 +79,7 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   List<PosOfBuses> posOfBusesList = await getAPIPosOfBuses();
 
   Map<int, List<PosOfBuses>> posOfBusesMap = {};
-  for (int i = 3; i < 10; i++){
+  for (int i = 1; i <= 14; i++){
     List<PosOfBuses> posOfBuses = posOfBusesList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -102,7 +102,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   Map <int, UlsanBusArrivalInfos> arrivalTimeInfoMap = await constructBusInfoMap();
   List<LaneStopInfo> laneStopInfoList = [];
 
-  for (int key in busNoMap.keys) {
+  for (int key = 1; key <= 14; key++) {
     if (unistNodeMap[key] == null) {
       print("Unexpected error for key: $key");
       continue;
@@ -112,18 +112,26 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<PosOfBuses> currentPosOfBus = posMap[key] ?? [];
     UlsanBusArrivalInfos? arrivalTimeInfo = arrivalTimeInfoMap[key];
     LaneToTracks busInfo = busNoMap[key]!;
-    Map<int, NodeOfLanes> routeKey2Node = { for (var node in nodesOfBus) node.routeKey : node };
+   
 
+    Map<String, NodeOfLanes> id2Node = { for (var node in nodesOfBus) node.nodeId : node };
+    Map<String, NodeOfLanes> name2Node = { for (var node in nodesOfBus) node.nodeName : node };
+  // return laneStopInfoList;
     // Calculate stop left by subtract current position from UNIST
     List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(node: routeKey2Node[position.routeKey]!, stopLeft: unistNode.nodeOrder - position.nodeOrder)
+      StopInfo(node: id2Node[position.nodeId]!, stopLeft: unistNode.nodeOrder - position.nodeOrder)
     ).toList();
     
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
-    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: routeKey2Node[arrivalTimeInfo.routeKeyUsb]!, timeLeft: arrivalTimeInfo.arrivalTime);
-    
-    
+    // if (name2Node[arrivalTimeInfo?.currentNodeName] == null){
+    //   print("Unexpected error for name: ${arrivalTimeInfo?.currentNodeName}");
+    //   continue;
+    // }
+
+    // StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(node: name2Node[arrivalTimeInfo.currentNodeName]!, timeLeft: arrivalTimeInfo.arrivalTime);
+    StopInfo? timeLeft;
+
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left
 
