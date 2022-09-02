@@ -2,14 +2,16 @@ import 'package:bus_hexa/model/getAPI.dart';
 import 'package:bus_hexa/model/classes.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
+
 class StopInfo {
   int? stopLeft;
   int? timeLeft;
-  
+
   String nodeName;
 
-  StopInfo ({required this.nodeName, this.stopLeft, this.timeLeft});
+  StopInfo({required this.nodeName, this.stopLeft, this.timeLeft});
 }
+
 class LaneStopInfo {
   LaneToTracks bus;
   List<StopInfo> stopInfoList;
@@ -17,32 +19,36 @@ class LaneStopInfo {
   LaneStopInfo({required this.bus, required this.stopInfoList});
 }
 
-
 // Key: RouteKey, Value: LaneToTracks object
 // 각 버스의 기본적인 정보
-Future<Map <int, LaneToTracks>> constructBusNoMap() async {
-    List<LaneToTracks> laneToTrackList = await getAPILaneToTracks();
-    Map<int, LaneToTracks> busNoMap = { for (var element in laneToTrackList) element.id : element };
-    return busNoMap;
+Future<Map<int, LaneToTracks>> constructBusNoMap() async {
+  List<LaneToTracks> laneToTrackList = await getAPILaneToTracks();
+  Map<int, LaneToTracks> busNoMap = {
+    for (var element in laneToTrackList) element.id: element
+  };
+  return busNoMap;
 }
 
 // Key: RouteKey(routeKeyUsb), Value: UlsanBusArrivalInfos object
 // 각 버스의 도착 시간 정보 (울산과학기술원 기준 도착시간 표시)
-Future<Map <int, UlsanBusArrivalInfos>> constructBusInfoMap() async {
-  List<UlsanBusArrivalInfos> ulsanBusArrivalInfos = await getAPIUlsanBusArrivalInfos();
-    Map<int, UlsanBusArrivalInfos> busInfoMap = { for (var element in ulsanBusArrivalInfos) element.routeKeyUsb : element };
-    return busInfoMap;
+Future<Map<int, UlsanBusArrivalInfos>> constructBusInfoMap() async {
+  List<UlsanBusArrivalInfos> ulsanBusArrivalInfos =
+      await getAPIUlsanBusArrivalInfos();
+  Map<int, UlsanBusArrivalInfos> busInfoMap = {
+    for (var element in ulsanBusArrivalInfos) element.routeKeyUsb: element
+  };
+  return busInfoMap;
 }
 
 // Key: BusNo(routeKey), Value: NodeOfLanes List
 // 각 버스의 정거장 정보
-Future<Map <int, List<NodeOfLanes>>> constructNodeOfLanesMap() async {
+Future<Map<int, List<NodeOfLanes>>> constructNodeOfLanesMap() async {
   List<NodeOfLanes> nodeOfLaneList = await getAPINodeOfLanes();
   // Map <int, LaneToTracks> busNomap = await constructBusNoMap();
 
   Map<int, List<NodeOfLanes>> nodeOfLanesMap = {};
 
-  for (int i = 1; i <= 14; i++){
+  for (int i = 1; i <= 14; i++) {
     List<NodeOfLanes> nodeOfBus = nodeOfLaneList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -61,7 +67,7 @@ Future<Map<int, NodeOfLanes>> constructUNISTNodeMap() async {
 
   Map<int, NodeOfLanes> unistNodeMap = {};
 
-  for (int i = 1; i <= 14; i++){
+  for (int i = 1; i <= 14; i++) {
     List<NodeOfLanes> nodeOfBus = unistNodes.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -73,13 +79,13 @@ Future<Map<int, NodeOfLanes>> constructUNISTNodeMap() async {
 
   return unistNodeMap;
 }
- 
+
 // 긱 버스의 현재 위치 (울산과학기술원과 관계 없이 현재 위치)
 Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   List<PosOfBuses> posOfBusesList = await getAPIPosOfBuses();
 
   Map<int, List<PosOfBuses>> posOfBusesMap = {};
-  for (int i = 1; i <= 14; i++){
+  for (int i = 1; i <= 14; i++) {
     List<PosOfBuses> posOfBuses = posOfBusesList.where((element) {
       return element.routeKey == i;
     }).toList();
@@ -90,16 +96,14 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   return posOfBusesMap;
 }
 
-
-
-
 // 기존 정보 활용하여 진행
 Future<List<LaneStopInfo>> constructStopInfo() async {
-  Map <int, LaneToTracks> busNoMap= await constructBusNoMap();
+  Map<int, LaneToTracks> busNoMap = await constructBusNoMap();
   Map<int, NodeOfLanes> unistNodeMap = await constructUNISTNodeMap();
   Map<int, List<PosOfBuses>> posMap = await constructPosMap();
-  Map <int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
-  Map <int, UlsanBusArrivalInfos> arrivalTimeInfoMap = await constructBusInfoMap();
+  Map<int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
+  Map<int, UlsanBusArrivalInfos> arrivalTimeInfoMap =
+      await constructBusInfoMap();
   List<LaneStopInfo> laneStopInfoList = [];
 
   for (int key = 1; key <= 14; key++) {
@@ -112,28 +116,31 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<PosOfBuses> currentPosOfBus = posMap[key] ?? [];
     UlsanBusArrivalInfos? arrivalTimeInfo = arrivalTimeInfoMap[key];
     LaneToTracks busInfo = busNoMap[key]!;
-   
 
-    Map<String, NodeOfLanes> id2Node = { for (var node in nodesOfBus) node.nodeId : node };
-    Map<String, NodeOfLanes> name2Node = { for (var node in nodesOfBus) node.nodeName : node };
-  // return laneStopInfoList;
+    Map<String, NodeOfLanes> id2Node = {
+      for (var node in nodesOfBus) node.nodeId: node
+    };
+
     // Calculate stop left by subtract current position from UNIST
-    List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(nodeName: id2Node[position.nodeId]!.nodeName, stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs())
-    ).toList();
-    
+    List<StopInfo> stopLeftList = currentPosOfBus
+        .map((position) => StopInfo(
+            nodeName: id2Node[position.nodeId]!.nodeName,
+            stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs()))
+        .toList();
+
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
-    // if (name2Node[arrivalTimeInfo?.currentNodeName] == null){
-    //   print("Unexpected error for name: ${arrivalTimeInfo?.currentNodeName}");
-    //   continue;
-    // }
-
-    StopInfo? timeLeft = arrivalTimeInfo == null ? null : StopInfo(nodeName: arrivalTimeInfo.currentNodeName, timeLeft: arrivalTimeInfo.arrivalTime);
+    StopInfo? timeLeft = arrivalTimeInfo == null
+        ? null
+        : StopInfo(
+            nodeName: arrivalTimeInfo.currentNodeName,
+            timeLeft: arrivalTimeInfo.arrivalTime);
 
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
-    stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left
-    laneStopInfoList.add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
+    stopInfoList
+        .addAll(stopLeftList); // time info has higher priority than stop left
+    laneStopInfoList
+        .add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
   }
 
   return laneStopInfoList;
