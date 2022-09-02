@@ -125,7 +125,8 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<StopInfo> stopLeftList = currentPosOfBus
         .map((position) => StopInfo(
             nodeName: id2Node[position.nodeId]!.nodeName,
-            stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs()))
+            stopLeft: (unistNode.nodeOrder - position.nodeOrder)))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
         .toList();
 
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
