@@ -12,9 +12,9 @@ class StopInfo {
 }
 class LaneStopInfo {
   LaneToTracks bus;
-  List<StopInfo> stopInfoList = [];
+  List<StopInfo> stopInfoList;
 
-  LaneStopInfo({required this.bus, stopInfoList});
+  LaneStopInfo({required this.bus, required this.stopInfoList});
 }
 
 
@@ -119,7 +119,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   // return laneStopInfoList;
     // Calculate stop left by subtract current position from UNIST
     List<StopInfo> stopLeftList = currentPosOfBus.map((position) => 
-      StopInfo(node: id2Node[position.nodeId]!, stopLeft: unistNode.nodeOrder - position.nodeOrder)
+      StopInfo(node: id2Node[position.nodeId]!, stopLeft: (unistNode.nodeOrder - position.nodeOrder).abs())
     ).toList();
     
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
@@ -134,7 +134,6 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
 
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList.addAll(stopLeftList); // time info has higher priority than stop left
-
     laneStopInfoList.add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
   }
 
@@ -267,22 +266,22 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
 //   return dataList;
 // }
 
-void testStopInfo() async {
-  // List poses = await poslist();
-  // Map posMap = await posmap();
-  // List ulsan = await TimeInfo();
-  // // List pos = await getAPIPosOfBuses();
-  // // List nodes = await nodesoflanemap();
-  // List stop = await StopInfo_1();
-  // // Map nodemaps = await nodemap();
-  // List stop2 = await StopInfo_2();
-  // //print(ulsan);
-  // print(poses);
-  // //print(posMap);
-  // //print(nodes);
-  // print(stop);
-  // print(stop2);
-  // print(nodemaps);
-  List<LaneStopInfo> laneStopInfoList = await constructStopInfo();
-  print(laneStopInfoList);
-}
+// void testStopInfo() async {
+//   // List poses = await poslist();
+//   // Map posMap = await posmap();
+//   // List ulsan = await TimeInfo();
+//   // // List pos = await getAPIPosOfBuses();
+//   // // List nodes = await nodesoflanemap();
+//   // List stop = await StopInfo_1();
+//   // // Map nodemaps = await nodemap();
+//   // List stop2 = await StopInfo_2();
+//   // //print(ulsan);
+//   // print(poses);
+//   // //print(posMap);
+//   // //print(nodes);
+//   // print(stop);
+//   // print(stop2);
+//   // print(nodemaps);
+//   List<LaneStopInfo> laneStopInfoList = await constructStopInfo();
+//   print(laneStopInfoList);
+// }
