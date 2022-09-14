@@ -29,18 +29,18 @@ class _BusTimeState extends State<BusTime> {
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: childWidget!);
       },
-      home: deparatureTime(),
+      home: DepartureTimePage(),
     );
   }
 }
 
-class deparatureTime extends StatefulWidget {
-  const deparatureTime({Key? key}) : super(key: key);
+class DepartureTimePage extends StatefulWidget {
+  const DepartureTimePage({Key? key}) : super(key: key);
   @override
-  State<deparatureTime> createState() => _deparatureTimeState();
+  State<DepartureTimePage> createState() => _DepartureTimePageState();
 }
 
-class _deparatureTimeState extends State<deparatureTime> {
+class _DepartureTimePageState extends State<DepartureTimePage> {
   var newList = new List.empty(growable: true);
   TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
   // TimeOfDay time = TimeOfDay.now();
