@@ -1,9 +1,7 @@
 import 'package:path/path.dart' as Path;
 import 'package:flutter/material.dart';
 import 'package:bus_hexa/busTimeData.dart';
-import 'package:provider/provider.dart';
 import 'package:bus_hexa/provider/busTimeProvider.dart';
-import 'package:provider/provider.dart';
 
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
