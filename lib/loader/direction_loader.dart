@@ -1,18 +1,22 @@
 import 'package:bus_hexa/constant.dart';
 import 'package:bus_hexa/model/getAPI.dart';
 import 'package:bus_hexa/model/classes.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:math';
+import 'dart:core';
+import 'package:flutter/material.dart';
+
+TimeOfDay now = TimeOfDay.now();
+//TimeOfDay time = TimeOfDay(hour: now.hour, minute: now.minute);
+int current_time = now.hour*100 + now.minute;
 
 class StopInfo {
   int? stopLeft;
   int? timeLeft;
 
   String nodeName;
+  //String busName;
 
-  StopInfo({required this.nodeName, this.stopLeft, this.timeLeft});
+  StopInfo({required this.nodeName, /*required this.busName*/ this.stopLeft, this.timeLeft});
 }
-
 class LaneStopInfo {
   LaneToTracks bus;
   List<StopInfo> stopInfoList;
@@ -97,6 +101,24 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   return posOfBusesMap;
 }
 
+Future<Map<int, List<UlsanBusTimeTables>>> constructTimeTablesMap() async {
+  List<UlsanBusTimeTables> timeTablesList = await getAPIUlsanBusTimeTables ();
+  // Map <int, LaneToTracks> busNomap = await constructBusNoMap();
+
+  Map<int, List<UlsanBusTimeTables>> timeTablesMap = {};
+
+  for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
+    List<UlsanBusTimeTables> timeTables = timeTablesList.where((element) {
+      return element.routeKeyUsb == i;
+    }).toList();
+    timeTablesMap[i] = timeTables;
+  }
+
+  return timeTablesMap;
+}
+
+
+
 // 기존 정보 활용하여 진행
 Future<List<LaneStopInfo>> constructStopInfo() async {
   Map<int, LaneToTracks> busNoMap = await constructBusNoMap();
@@ -105,6 +127,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   Map<int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
   Map<int, UlsanBusArrivalInfos> arrivalTimeInfoMap =
       await constructBusInfoMap();
+  Map<int, List<UlsanBusTimeTables>> timeTablesMap = await constructTimeTablesMap();
   List<LaneStopInfo> laneStopInfoList = [];
 
   for (int key = N_BUS_MIN; key <= N_BUS_MAX; key++) {
@@ -117,6 +140,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<PosOfBuses> currentPosOfBus = posMap[key] ?? [];
     UlsanBusArrivalInfos? arrivalTimeInfo = arrivalTimeInfoMap[key];
     LaneToTracks busInfo = busNoMap[key]!;
+    List<UlsanBusTimeTables> timeTableInfo = timeTablesMap[key] ?? [];
 
     Map<String, NodeOfLanes> id2Node = {
       for (var node in nodesOfBus) node.nodeId: node
@@ -132,6 +156,12 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
 
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
+    List timeTableList = timeTableInfo
+        .where(((timetable) => int.parse(timetable.departTime) >= current_time))
+        .toList();
+        timeTableList[0] ="${timeTableList[0]~/100}:${timeTableList[0]%100}";
+        timeTableList[1]="${timeTableList[1]~/100}:${timeTableList[1]%100}";
+
     StopInfo? timeLeft = arrivalTimeInfo == null
         ? null
         : StopInfo(
@@ -141,8 +171,15 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
     stopInfoList
         .addAll(stopLeftList); // time info has higher priority than stop left
+    stopInfoList
+        .add(timeTableList[0]);
+    stopInfoList
+        .add(timeTableList[1]);
+
     laneStopInfoList
         .add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
+
+
   }
 
   return laneStopInfoList;
