@@ -11,3 +11,4 @@ class DetailPageProvider with ChangeNotifier {
   }
 }
 
+

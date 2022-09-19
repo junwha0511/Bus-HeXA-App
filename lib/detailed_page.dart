@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:bus_hexa/detailedPageData.dart';
 import 'package:bus_hexa/provider/detailedPageProvider.dart';
 
@@ -17,7 +16,7 @@ class _detailedPageState extends State<detailedPage> {
       "bus": "337(삼남순환)",
       "mainStation": 'KTX울산역, 구영리, 언양터미널, 울산터미널',
       "departTime": ['05:35', '06:05', '06:30'],
-      "node_orders":[1,2,3,4,5,6,7],
+      "node_orders": [1, 2, 3, 4, 5, 6, 7],
       "node_names": ['삼남신화', '마산', '웃마산', '마산입구', '벌장', '메가마트', '작천정입구'],
       "poseOfBuses": ['', '', '', '', '', '', "71자2763"]
     }
@@ -108,7 +107,8 @@ class _detailedPageState extends State<detailedPage> {
                           return Colors.blueAccent.withOpacity(0.1);
                         }),
                         cells: [
-                          DataCell(Text(detail[idx]["node_orders"][index].toString())),
+                          DataCell(Text(
+                              detail[idx]["node_orders"][index].toString())),
                           DataCell(Text(detail[idx]["node_names"][index])),
                           DataCell(Text(
                               detail[idx]["poseOfBuses"][index].toString()))
