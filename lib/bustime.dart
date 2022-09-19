@@ -49,21 +49,56 @@ class _deparatureTimeState extends State<deparatureTime> {
 
   @override
   // var _busTime = Provider.of<dpt>(context).Data();
-  List<Map> _busTime = [
-    {'bus': '337(삼남순환)', 'time': '0535', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '337(삼남순환)', 'time': '0605', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '337(삼남순환)', 'time': '0630', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0740', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0820', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0905', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
-    {'bus': '304(율리방면)', 'time': '0935', 'route': '울산터미널, 구영리, 언양터미널, KTX울산역'},
+ List<Map<String, String>> _busTime = [
+    {
+      'bus': '337(삼남순환)',
+      'hour': '05',
+      'min': '35',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '337(삼남순환)',
+      'hour': '06',
+      'min': '05',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '337(삼남순환)',
+      'hour': '06',
+      'min': '30',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '304(율리방면)',
+      'hour': '07',
+      'min': '40',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '304(율리방면)',
+      'hour': '08',
+      'min': '20',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '304(율리방면)',
+      'hour': '09',
+      'min': '05',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
+    {
+      'bus': '304(율리방면)',
+      'hour': '09',
+      'min': '35',
+      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
+    },
   ];
 
   Widget build(BuildContext context) {
     for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
-          hour: int.parse(_busTime[i]['time'].substring(0, 2)),
-          minute: int.parse(_busTime[i]['time'].substring(2)));
+          hour: int.parse(_busTime[i]['hour']),
+          minute: int.parse(_busTime[i]['min']));
       if (listTime.hour > time.hour) {
         newList.add(_busTime[i]);
       } else if (listTime.hour == time.hour) {

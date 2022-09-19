@@ -1,20 +1,19 @@
 import 'package:bus_hexa/model/classes.dart';
 import 'package:bus_hexa/model/getAPI.dart';
 
-busNames() async {
+Future<List<String>> busNames() async {
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
-  List<int> idList = List<int>.generate(
-      laneToTracks.length, (index) => laneToTracks[index].id);
-  List<String> routeList = List<String>.generate(
-      laneToTracks.length, (index) => laneToTracks[index].busName);
-  Map<int, String> idName = {};
+  List<String> routeList = [];
   for (var i = 0; i < laneToTracks.length; i++) {
-    idName[idList[i]] = routeList[i];
+    if (laneToTracks[i].id == i + 1) {
+      routeList.add(laneToTracks[i].busName);
+    }
   }
   return routeList;
 }
+//laneToTracks에 있는 버스 이름 리스트로
 
-landmarkKeyList() async {
+Future<List<List<int>>> landmarkKeyList() async {
   List<LandmarkOfLanes> landmarkLanes = await getAPILandmarkOfLanes();
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<List<int>> landmarkKey = [];
@@ -27,8 +26,9 @@ landmarkKeyList() async {
   }
   return landmarkKey;
 }
+//LandmarkOfLanes id로 lanemarkkey 리스트를 리스트로
 
-landmarkNodesList() async {
+Future<List<List<int>>> landmarkNodesList() async {
   List<LandmarkNodes> landmarkNodes = await getAPILandmarkNodes();
   List<List<int>> landmarkKey = await landmarkKeyList();
   List<List<int>> alias_key_list = [];
@@ -47,8 +47,9 @@ landmarkNodesList() async {
   }
   return alias_key_list;
 }
+//landmarkKeylist에 해당하는 alias key
 
-landmarkAliasesList() async {
+Future<List<List<String>>> landmarkAliasesList() async {
   List<LandmarkAliases> landmarkAliases = await getAPILandmarkAliases();
   List<List<int>> alias_key_list = await landmarkNodesList();
   List<List<String>> alias_name_list = [];
@@ -65,8 +66,9 @@ landmarkAliasesList() async {
   }
   return alias_name_list;
 }
+//aliaskey에 해당하는 alias name
 
-landmarkNames() async {
+Future<List<String>> landmarkNames() async {
   List<List<String>> alias_name_list = await landmarkAliasesList();
   List<String> landmark = [];
   for (int i = 0; i < alias_name_list.length; i++) {
@@ -75,8 +77,9 @@ landmarkNames() async {
   }
   return landmark;
 }
+//리스트의 주요역 이름들을 ,로 연결해서 string으로
 
-departTimeList() async {
+Future<List<List<String>>> departTimeList() async {
   List<UlsanBusTimeTables> timeTable = await getAPIUlsanBusTimeTables();
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<List<String>> departTimeList = [];
@@ -91,8 +94,9 @@ departTimeList() async {
   }
   return departTimeList;
 }
+//출발시각 list로
 
-nodeNames() async {
+Future<List<List<String>>> nodeNames() async {
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<NodeOfLanes> nodeOfLanes = await getAPINodeOfLanes();
   List<List<String>> nodeNameList = [];
@@ -107,8 +111,9 @@ nodeNames() async {
   }
   return nodeNameList;
 }
+//정류장 이름 출발 순서대로
 
-nodeOrder() async {
+Future<List<List<int>>> nodeOrder() async {
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<NodeOfLanes> nodeOfLanes = await getAPINodeOfLanes();
   List<List<int>> nodeOrderList = [];
@@ -123,15 +128,16 @@ nodeOrder() async {
   }
   return nodeOrderList;
 }
+//출발 순서
 
-posOfBusesList() async {
+Future<List<List<String>>> posOfBusesList() async {
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<PosOfBuses> posOfBus = await getAPIPosOfBuses();
   List<List<String>> nodeNameList = await nodeNames();
-  List<List<dynamic>> busName_List = [];
+  List<List<String>> busName_List = [];
   for (var i = 0; i < laneToTracks.length; i++) {
     var busNameNode =
-        List<dynamic>.generate(nodeNameList[i].length, (index) => '');
+        List<String>.generate(nodeNameList[i].length, (index) => '');
     for (var j = 0; j < posOfBus.length; j++) {
       if (posOfBus[j].routeKey == laneToTracks[i].id) {
         busNameNode.remove(posOfBus[j].nodeOrder - 1);
@@ -143,25 +149,44 @@ posOfBusesList() async {
   }
   return busName_List;
 }
+// 다른 정류장들은 ''로, 현재 버스가 위치한 정거장은 버스 이름으로
 
-detailedPageData() async {
+class busDetailData {
+  String bus;
+  String mainStation;
+  List<String> departTime;
+  List<int> node_orders;
+  List<String> node_names;
+  List<String> poseOfBuses;
+
+  busDetailData(
+      {required this.bus,
+      required this.mainStation,
+      required this.departTime,
+      required this.node_orders,
+      required this.node_names,
+      required this.poseOfBuses});
+}
+
+Future<List<busDetailData>> detailedPageData() async {
   List<LaneToTracks> laneToTracks = await getAPILaneToTracks();
   List<String> routeList = await busNames();
   List<String> landmark = await landmarkNames();
-  List<List<String>> deparatTime = await departTimeList();
+  List<List<String>> departTime = await departTimeList();
   List<List<String>> nodeNameList = await nodeNames();
   List<List<int>> nodeOrderList = await nodeOrder();
-  List<List<dynamic>> busNameList = await posOfBusesList();
-  List<Map<String, dynamic>> detail = [];
+  List<List<String>> busNameList = await posOfBusesList();
+  List<busDetailData> detail = [];
   for (var i = 0; i < laneToTracks.length; i++) {
-    Map<String, dynamic> data = {};
-    data["bus"] = routeList[i];
-    data["mainStation"] = landmark[i];
-    data["departTime"] = deparatTime[i];
-    data["node_orders"] = nodeOrderList[i];
-    data["node_names"] = nodeNameList[i];
-    data["poseOfBuses"] = busNameList[i];
-    detail.add(data);
+    List<busDetailData> detail = laneToTracks
+        .map((element) => busDetailData(
+            bus: laneToTracks[i].busName,
+            mainStation: routeList[i],
+            departTime: departTime[i],
+            node_orders: nodeOrderList[i],
+            node_names: nodeNameList[i],
+            poseOfBuses: busNameList[i]))
+        .toList();
   }
   return detail;
 }
@@ -169,16 +194,3 @@ detailedPageData() async {
 //출발시간(depart_time)은 timetable의 출발시간 순서로 되어있음.
 //정류장 이름(node_names)와 정류장 순서(node_orders)는 nodeOfLanes의 순서로 되어있음.
 
-// void main() async {
-//   List<String> routeList = await busNames();
-//   List<String> landmark = await landmarkNames();
-//   List<String> deparatTime = await departTimeList();
-//   List<List<String>> nodeNameList = await nodeNames();
-//   List<List<dynamic>> busNameList = await posOfBusesList();
-//   List detail = await detailedPageData();
-//   print(routeList);
-//   print(landmark);
-//   print(deparatTime);
-//   print(nodeNameList);
-//   print(busNameList);
-// }
