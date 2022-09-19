@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'constant.dart';
 
-
 List<dynamic> laneToTracks = [];
 List<dynamic> ulsanBusLaneToTracks = [];
+
 class LinePage extends StatefulWidget {
   const LinePage({Key? key}) : super(key: key);
 
   @override
   State<LinePage> createState() => _LinePageState();
 }
+
 // thenstate -> api call , feature 받고 확인
 class _LinePageState extends State<LinePage> {
   final List<String> numbers = ['337', '304', '743', '133', '233'];
@@ -23,27 +24,26 @@ class _LinePageState extends State<LinePage> {
     ['133(꽃바위 방면)', '133(울산과학기술원 방면)'],
     ['233(농소차고지 방면)', '233(농소차고지 방면)', '233(울산과학기술원 방면)']
   ];
-  List<String> nums=[];
+  List<String> nums = [];
   @override
-  initState(){
-  //  getlinedata();
-    Future<List<dynamic>> laneToTracks = getAPILaneToTracks(URL_LANE_TO_TRACKS);
-    Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks(URL_ULSAN_BUS_LANE_TO_TRACKS);
+  initState() {
+    //  getlinedata();
+    Future<List<dynamic>> laneToTracks = getAPILaneToTracks();
+    Future<List<dynamic>> ulsanBusLaneToTracks = getAPIUlsanBusLaneToTracks();
 
     laneToTracks.then((value) {
-      for(dynamic entry in value){
+      for (dynamic entry in value) {
         this.nums.add(entry.busName);
       }
     });
     ulsanBusLaneToTracks.then((value) {});
-    laneToTracks.then((value){
+    laneToTracks.then((value) {
       print(nums);
     });
     super.initState();
-
   }
 
-  void buildDir(context, index) async{
+  void buildDir(context, index) async {
     showDialog(
         context: context,
         builder: (context) {
@@ -61,7 +61,7 @@ class _LinePageState extends State<LinePage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color:  Color.fromARGB(255, 39, 6, 49),
+                      color: Color.fromARGB(255, 39, 6, 49),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     margin: EdgeInsets.only(bottom: 10),
@@ -87,8 +87,7 @@ class _LinePageState extends State<LinePage> {
         itemCount: numbers.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () 
-            { 
+            onTap: () {
               buildDir(context, index);
             },
             child: Container(

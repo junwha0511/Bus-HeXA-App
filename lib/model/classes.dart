@@ -1,9 +1,9 @@
-
 // ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:bus_hexa/constant.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:http/http.dart';
 
 class LaneToTracks {
   int id;
@@ -57,13 +57,12 @@ class PosOfBuses {
         busNum = json['bus_num'],
         nodeOrder = json['node_order'];
 
-  Map<String,dynamic> toJson() =>
-  {
-    'route_key' : routeKey,
-    'node_id' : nodeId,
-    'bus_num' : busNum,
-    'node_order' : nodeOrder,
-  };
+  Map<String, dynamic> toJson() => {
+        'route_key': routeKey,
+        'node_id': nodeId,
+        'bus_num': busNum,
+        'node_order': nodeOrder,
+      };
 }
 
 class UlsanBusLaneToTracks {
@@ -136,16 +135,16 @@ class UlsanBusArrivalInfos {
         vehicleNo = json['vehicle_no'],
         currentNodeName = json['current_node_name'];
 
-  Map<String,dynamic> toJson() =>
-  {
-    'route_key_usb' : routeKeyUsb,
-    'node_key_usb' : nodeKeyUsb,
-    'prev_stop_cnt' : prevStopCnt,
-    'arrival_time' : arrivalTime,
-    'vehicle_no' : vehicleNo,
-    'current_node_name' : currentNodeName
-  };
+  Map<String, dynamic> toJson() => {
+        'route_key_usb': routeKeyUsb,
+        'node_key_usb': nodeKeyUsb,
+        'prev_stop_cnt': prevStopCnt,
+        'arrival_time': arrivalTime,
+        'vehicle_no': vehicleNo,
+        'current_node_name': currentNodeName
+      };
 }
+
 class LaneAliases {
   int id;
   String aliasName;
@@ -202,24 +201,26 @@ class MapToAliases {
 
 class LandmarkAliases {
   String aliasName;
-
+  int aliasKey;
   LandmarkAliases.fromJson(Map<String, dynamic> json)
-      : aliasName = json['alias_name'];
+      : aliasName = json['alias_name'],
+        aliasKey = json['id'];
 
-  Map<String, dynamic> toJson() => {
-        'alias_name': aliasName,
-      };
+  Map<String, dynamic> toJson() => {'alias_name': aliasName, 'id': aliasKey};
 }
 
 class LandmarkNodes {
   int aliasKey;
   String nodeId;
+  int id;
 
   LandmarkNodes.fromJson(Map<String, dynamic> json)
-      : aliasKey = json['alias_key'],
+      : id = json['id'],
+        aliasKey = json['alias_key'],
         nodeId = json['node_id'];
 
-  Map<String, dynamic> toJson() => {'alias_key': aliasKey, 'node_id': nodeId};
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'alias_key': aliasKey, 'node_id': nodeId};
 }
 
 class LandmarkOfLanes {

@@ -1,6 +1,7 @@
+import 'package:path/path.dart' as Path;
 import 'package:flutter/material.dart';
-
-void main() => runApp(BusTime());
+import 'package:bus_hexa/busTimeData.dart';
+import 'package:bus_hexa/provider/busTimeProvider.dart';
 
 class BusTime extends StatefulWidget {
   const BusTime({Key? key}) : super(key: key);
@@ -10,119 +11,92 @@ class BusTime extends StatefulWidget {
 }
 
 class _BusTimeState extends State<BusTime> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     var _bus = Provider.of<dpt>(context, listen: false);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'busDeparatureTime',
-      home: deparatureTime(),
       debugShowCheckedModeBanner: false,
       builder: (context, childWidget) {
         return MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: childWidget!);
       },
+      home: DepartureTimePage(),
     );
   }
 }
 
-class deparatureTime extends StatefulWidget {
-  const deparatureTime({Key? key}) : super(key: key);
-
+class DepartureTimePage extends StatefulWidget {
+  const DepartureTimePage({Key? key}) : super(key: key);
   @override
-  State<deparatureTime> createState() => _deparatureTimeState();
+  State<DepartureTimePage> createState() => _DepartureTimePageState();
 }
 
-class _deparatureTimeState extends State<deparatureTime> {
-  List<Map> _busTime = [
+class _DepartureTimePageState extends State<DepartureTimePage> {
+  var newList = new List.empty(growable: true);
+  TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
+  // TimeOfDay time = TimeOfDay.now();
+
+  @override
+  // var _busTime = Provider.of<dpt>(context).Data();
+ List<Map<String, String>> _busTime = [
     {
-      'time': '05:35',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '337(삼남순환)',
+      'hour': '05',
+      'min': '35',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '06:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '337(삼남순환)',
+      'hour': '06',
+      'min': '05',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '06:30',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '337(삼남순환)',
+      'hour': '06',
+      'min': '30',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '07:00',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(율리방면)',
+      'hour': '07',
+      'min': '40',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '07:40',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(율리방면)',
+      'hour': '08',
+      'min': '20',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '08:20',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(율리방면)',
+      'hour': '09',
+      'min': '05',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
     {
-      'time': '09:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '09:35',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '10:10',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '10:45',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '11:25',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '12:05',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
-      'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
-    },
-    {
-      'time': '12:40',
-      'busnumber': '337',
-      'busdiretion': '삼남 순환',
+      'bus': '304(율리방면)',
+      'hour': '09',
+      'min': '35',
       'route': '울산터미널, 구영리, 언양터미널, KTX울산역'
     },
   ];
 
-  var newList = new List.empty(growable: true);
-  TimeOfDay time = TimeOfDay(hour: 00, minute: 00);
-
-  @override
   Widget build(BuildContext context) {
     for (var i = 0; i < _busTime.length; i++) {
       TimeOfDay listTime = TimeOfDay(
-          hour: int.parse(_busTime[i]['time'].split(":")[0]),
-          minute: int.parse(_busTime[i]['time'].split(":")[1]));
+          hour: int.parse(_busTime[i]['hour']),
+          minute: int.parse(_busTime[i]['min']));
       if (listTime.hour > time.hour) {
         newList.add(_busTime[i]);
       } else if (listTime.hour == time.hour) {
@@ -131,7 +105,6 @@ class _deparatureTimeState extends State<deparatureTime> {
         }
       }
     }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('버스출발시간 기준'),
@@ -211,9 +184,9 @@ class _deparatureTimeState extends State<deparatureTime> {
     return newList
         .map((newList) => DataRow(cells: [
               DataCell(Text(
-                  '${newList['time'].split(":")[0].toString().padLeft(2, '0')}:${newList['time'].split(":")[1].toString().padLeft(2, '0')}')),
-              DataCell(Text(newList['busnumber'])),
-              DataCell(Text(newList['busdiretion'])),
+                  '${newList['time'].substring(0, 2).toString().padLeft(2, '0')}:${newList['time'].substring(2).toString().padLeft(2, '0')}')),
+              DataCell(Text(newList['bus'].split("(")[0])),
+              DataCell(Text(newList['bus'].split("(")[1].split(")")[0])),
               DataCell(Text(newList['route'])),
             ]))
         .toList();
