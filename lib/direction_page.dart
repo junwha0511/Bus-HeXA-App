@@ -1,8 +1,11 @@
 import 'dart:core';
+import 'package:bus_hexa/loader/direction_loader.dart';
 import 'package:bus_hexa/main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bus_hexa/provider/BusHeXAProvider.dart';
 
-final List<Map<String, dynamic>> busInfo =[
+/*List<Map<String, dynamic>> busInfo =[
 {'bus_no': '337(삼남신화 방면)', 
 'info':[{'departure': true, 'stop_diff': null, 'min_left': 12, 'stop_point': '현대2차'}, 
 {'departure': false, 'dep_time': '13:40'}]},
@@ -27,12 +30,11 @@ final List<Map<String, dynamic>> busInfo =[
 {'bus_no': '233(농소차고지 방면)', 
 'info':[{'departure': false, 'dep_time': '14:30'},
  {'departure': false, 'dep_time': '16:20'}]}
-];
+];*/
 
 class Directionpage extends StatefulWidget {
-  const Directionpage({Key? key, required this.title}) : super(key: key);
+  const Directionpage({Key? key}) : super(key: key);
 
-  final String title;
   @override
   State<Directionpage> createState() => _DirectionpageState();
 }
@@ -40,88 +42,101 @@ class Directionpage extends StatefulWidget {
 class _DirectionpageState extends State<Directionpage> {
   final _scrollController = ScrollController();
   @override
+  /*void initState() {    
+    super.initState();
+    
+    }*/
   Widget build(BuildContext context) {
+    // var busInfo = Provider.of<Data>(context).updateData();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        shadowColor: Colors.grey,
-        title: const Text('버스 방향 기준', style: TextStyle(fontSize: 25)),
-      ),
-      body: Scrollbar(
-        controller: _scrollController,
-        radius: const Radius.circular(10),
-        thickness: 10,
-        child: SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
-              height: 50,
-              width: double.infinity,
-              color: const Color.fromARGB(255, 0, 86, 157),
-              child: const Text('정류소명 : 울산과학기술원', style: TextStyle(
-                fontSize: 20, color: Colors.white)),
-            ),
-            ...busInfo.map((info) => buildBusinfo(info))
-          ],
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          shadowColor: Colors.grey,
+          title: const Text('버스 방향 기준', style: TextStyle(fontSize: 25)),
         ),
-    ))));
+        body: Center(
+          child: Scrollbar(
+              controller: _scrollController,
+              radius: const Radius.circular(10),
+              thickness: 10,
+              child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
+                          height: 50,
+                          width: double.infinity,
+                          color: const Color.fromARGB(255, 0, 86, 157),
+                          child: const Text('정류소명 : 울산과학기술원',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white)),
+                        ),
+                        Consumer(builder: (BuildContext ctx,
+                            StopInfoProvider model, Widget? widget) {
+                          return Column(
+                            children: model.busStopInfo
+                                .map((info) => buildBusInfoBox(info))
+                                .toList(),
+                          );
+                        })
+                      ],
+                    ),
+                  ))),
+        ));
   }
 }
 
-Widget buildBusinfo(infoMap){
+Widget buildBusInfoBox(LaneStopInfo laneStopInfo) {
   return Container(
-              margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
-              height: 212,
-              width: 500,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color.fromARGB(255, 157, 203, 225), width: 1)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue[400]),
-                    child:  Center(
-                      child: Text(infoMap['bus_no'], style: TextStyle(fontSize: 25, color: Colors.white),),
-                      ),
-                    ),
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    child:  Center(
-                      child: infoMap['info'][0]['departure'] == false 
-                      ? Text( infoMap['info'][0]['dep_time']+' 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
-                      : infoMap['info'][0]['stop_diff'] == null 
-                        ? Text( infoMap['info'][0]['min_left'].toString()+'분 후'+'('+infoMap['info'][0]['stop_point'] +')', style: TextStyle(fontSize: 25, color: Colors.black),)
-                        : Text( infoMap['info'][0]['stop_diff'].toString()+'역 전'+'('+infoMap['info'][0]['stop_point']+')'
-                       ,style: TextStyle(fontSize: 25, color: Colors.black),),
-                    ),
-                  ),
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[300]
-                    ),
-                    child:  Center(
-                      child: infoMap['info'][1]['departure'] == false
-                      ? Text( infoMap['info'][1]['dep_time']+' 출발예정', style: TextStyle(fontSize: 25, color: Colors.black),)
-                      :infoMap['info'][1]['stop_diff'] == null
-                        ? Text( infoMap['info'][1]['min_left'].toString()+'분 후'+'('+infoMap['info'][1]['stop_point']+')', style: TextStyle(fontSize: 25, color: Colors.black),)
-                        :Text( infoMap['info'][1]['stop_diff'].toString()+'역 전'+'('+infoMap['info'][1]['stop_point']+')', style: TextStyle(fontSize: 25, color: Colors.black),),
-                    ),
-                  )
-                ],
-              ),);
-} 
+    margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+    width: 500,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            color: const Color.fromARGB(255, 157, 203, 225), width: 1)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildBusInfoEntry(Colors.blue[400], true, laneStopInfo, -1),
+        buildBusInfoEntry(Colors.white, false, laneStopInfo, 0),
+        buildBusInfoEntry(Colors.grey[300], false, laneStopInfo, 1)
+      ],
+    ),
+  );
+}
+
+Widget buildBusInfoEntry(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
+  if (idx >= laneStopInfo.stopInfoList.length) return Container();
+  return Container(
+      height: 70,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: boxcolor),
+      child: Center(
+          child: title == true
+              ? Text(laneStopInfo.bus
+                  .busName) //, style: TextStyle(fontSize: 25, color: Colors.white))
+              : buildBusInfoText(laneStopInfo.stopInfoList[idx]),
+      ),
+  );
+}
+
+// Convert stopInfo as text
+Widget buildBusInfoText(StopInfo stopInfo){
+  String text = "";
+  if (stopInfo.stopLeft != null) {
+    text = '${stopInfo.stopLeft!}역 전 (${stopInfo.nodeName})';
+  }
+  if (stopInfo.timeLeft != null) {
+    text = '${stopInfo.timeLeft! ~/ 60}분 후 (${stopInfo.nodeName})';
+  }
+  if (stopInfo.departTime != null) {
+    text = "${stopInfo.departTime!} 출발예정";
+  }
+  return Text(text, style: TextStyle(fontSize: 25, color: Colors.black));
+}
