@@ -80,7 +80,7 @@ class _DirectionpageState extends State<Directionpage> {
                             StopInfoProvider model, Widget? widget) {
                           return Column(
                             children: model.busStopInfo
-                                .map((info) => buildBusinfo(info))
+                                .map((info) => buildBusInfoBox(info))
                                 .toList(),
                           );
                         })
@@ -91,7 +91,7 @@ class _DirectionpageState extends State<Directionpage> {
   }
 }
 
-Widget buildBusinfo(LaneStopInfo laneStopInfo) {
+Widget buildBusInfoBox(LaneStopInfo laneStopInfo) {
   return Container(
     margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
     width: 500,
@@ -102,15 +102,15 @@ Widget buildBusinfo(LaneStopInfo laneStopInfo) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildBox(Colors.blue[400], true, laneStopInfo, -1),
-        buildBox(Colors.white, false, laneStopInfo, 0),
-        buildBox(Colors.grey[300], false, laneStopInfo, 1)
+        buildBusInfoEntry(Colors.blue[400], true, laneStopInfo, -1),
+        buildBusInfoEntry(Colors.white, false, laneStopInfo, 0),
+        buildBusInfoEntry(Colors.grey[300], false, laneStopInfo, 1)
       ],
     ),
   );
 }
 
-Widget buildBox(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
+Widget buildBusInfoEntry(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
   if (idx >= laneStopInfo.stopInfoList.length) return Container();
   return Container(
       height: 70,
@@ -121,13 +121,22 @@ Widget buildBox(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
           child: title == true
               ? Text(laneStopInfo.bus
                   .busName) //, style: TextStyle(fontSize: 25, color: Colors.white))
-              : laneStopInfo.stopInfoList[idx].stopLeft == null
-                  ? Text(
-                      '${laneStopInfo.stopInfoList[idx].timeLeft! ~/ 60}분 후 (${laneStopInfo.stopInfoList[idx].nodeName})',
-                      style: TextStyle(fontSize: 25, color: Colors.black),
-                    )
-                  : Text(
-                      '${laneStopInfo.stopInfoList[idx].stopLeft!}역 전 (${laneStopInfo.stopInfoList[idx].nodeName})',
-                      style: TextStyle(fontSize: 25, color: Colors.black),
-                    )));
+              : buildBusInfoText(laneStopInfo.stopInfoList[idx]),
+      ),
+  );
+}
+
+// Convert stopInfo as text
+Widget buildBusInfoText(StopInfo stopInfo){
+  String text = "";
+  if (stopInfo.stopLeft != null) {
+    text = '${stopInfo.stopLeft!}역 전 (${stopInfo.nodeName})';
+  }
+  if (stopInfo.timeLeft != null) {
+    text = '${stopInfo.timeLeft! ~/ 60}분 후 (${stopInfo.nodeName})';
+  }
+  if (stopInfo.departTime != null) {
+    text = "${stopInfo.departTime!} 출발예정";
+  }
+  return Text(text, style: TextStyle(fontSize: 25, color: Colors.black));
 }

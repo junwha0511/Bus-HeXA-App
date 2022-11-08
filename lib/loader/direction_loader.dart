@@ -11,11 +11,12 @@ int current_time = now.hour*100 + now.minute;
 class StopInfo {
   int? stopLeft;
   int? timeLeft;
+  String? departTime;
 
   String nodeName;
   //String busName;
 
-  StopInfo({required this.nodeName, /*required this.busName*/ this.stopLeft, this.timeLeft});
+  StopInfo({required this.nodeName, /*required this.busName*/ this.stopLeft, this.timeLeft, this.departTime});
 }
 class LaneStopInfo {
   LaneToTracks bus;
@@ -118,6 +119,7 @@ Future<Map<int, List<UlsanBusTimeTables>>> constructTimeTablesMap() async {
 }
 
 
+String intFixed(int n, int count) => n.toString().padLeft(count, "0");
 
 // 기존 정보 활용하여 진행
 Future<List<LaneStopInfo>> constructStopInfo() async {
@@ -156,26 +158,35 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
 
     stopLeftList.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
 
-    List timeTableList = timeTableInfo
-        .where(((timetable) => int.parse(timetable.departTime) >= current_time))
+    // Parse time table after current time
+    List<StopInfo> timeTableList = timeTableInfo
+        .map((timeTable) => int.parse(timeTable.departTime))
+        .where((time) => time >= current_time)
+        .map((time)=>StopInfo(nodeName: "", departTime: "${intFixed(time~/100, 2)}:${intFixed(time%100, 2)}"))
         .toList();
-        timeTableList[0] ="${timeTableList[0]~/100}:${timeTableList[0]%100}";
-        timeTableList[1]="${timeTableList[1]~/100}:${timeTableList[1]%100}";
-
+  
+    // time info has higher priority than stop left
     StopInfo? timeLeft = arrivalTimeInfo == null
         ? null
         : StopInfo(
             nodeName: arrivalTimeInfo.currentNodeName,
             timeLeft: arrivalTimeInfo.arrivalTime);
 
+    // stop info 
     List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
+    if (timeLeft != null && stopLeftList.length > 0) stopLeftList.removeAt(0);
     stopInfoList
-        .addAll(stopLeftList); // time info has higher priority than stop left
-    stopInfoList
-        .add(timeTableList[0]);
-    stopInfoList
-        .add(timeTableList[1]);
+        .addAll(stopLeftList);
+    
+    // time table
+    if (timeTableList.length > 0) {
+      stopInfoList.add(timeTableList[0]);
+    }
+    if (timeTableList.length > 1) {
+      stopInfoList.add(timeTableList[1]);
+    }
 
+    // Add to global
     laneStopInfoList
         .add(LaneStopInfo(bus: busInfo, stopInfoList: stopInfoList));
 
