@@ -1,4 +1,4 @@
-const String URL_DOMAIN = "jaehwanshim.ddns.net";
+const String URL_DOMAIN = "bus.hexa.pro";
 const String URL_LANE_TO_TRACKS =
     'http://$URL_DOMAIN/api/lanetotracks/?format=json';
 const String URL_NODE_OF_LANES =

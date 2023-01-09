@@ -26,21 +26,22 @@ class LaneToTracks {
 }
 
 class NodeOfLanes {
-  int id;
+  // int id;
   int routeKey;
   int nodeOrder;
   String nodeId;
   String nodeName;
 
   NodeOfLanes.fromJson(Map<String, dynamic> json)
-      : id = json['id'], 
+      : 
+      // id = json['id'], 
         routeKey = json['route_key'],
         nodeOrder = json['node_order'],
         nodeId = json['node_id'],
         nodeName = json['node_name'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
+        // 'id': id,
         'route_key': routeKey,
         'node_order': nodeOrder,
         'node_id': nodeId,
