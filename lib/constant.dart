@@ -26,5 +26,5 @@ const String URL_LANDMARK_NODES =
 const String URL_LANDMARK_OF_LANES =
     'http://$URL_DOMAIN/api/landmarkoflanes/?format=json';
 
-const int N_BUS_MAX = 10;
+const int N_BUS_MAX = 9;
 const int N_BUS_MIN = 1;

@@ -9,12 +9,19 @@ List<Map<String, dynamic>> busInfo = [];
 
 class StopInfoProvider with ChangeNotifier {
   List<LaneStopInfo> busStopInfo = [];
+  List<LaneStopInfo337> busStopInfo337 = [];
   //List getBusinfolist() {
   //  updateData();
   // return busInfo;
   // }
   StopInfoProvider() {
+    updateData337();
     updateData();
+  }
+  void updateData337() async {
+    busStopInfo337 = await constructStopInfo337();
+    print(busStopInfo337);
+    notifyListeners();
   }
   void updateData() async {
     busStopInfo = await constructStopInfo();

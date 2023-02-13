@@ -79,6 +79,14 @@ class _DirectionpageState extends State<Directionpage> {
                         Consumer(builder: (BuildContext ctx,
                             StopInfoProvider model, Widget? widget) {
                           return Column(
+                            children: model.busStopInfo337
+                                .map((info337) => buildBusInfoBox337(info337))
+                                .toList(),
+                          );
+                            }),
+                        Consumer(builder: (BuildContext ctx,
+                            StopInfoProvider model, Widget? widget) {
+                          return Column(
                             children: model.busStopInfo
                                 .map((info) => buildBusInfoBox(info))
                                 .toList(),
@@ -89,6 +97,25 @@ class _DirectionpageState extends State<Directionpage> {
                   ))),
         ));
   }
+}
+
+Widget buildBusInfoBox337(LaneStopInfo337 laneStopInfo337) {
+  return Container(
+    margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+    width: 500,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            color: const Color.fromARGB(255, 157, 203, 225), width: 1)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildBusInfoEntry337(Colors.blue[400], true, laneStopInfo337, -1),
+        buildBusInfoEntry337(Colors.white, false, laneStopInfo337, 0),
+        buildBusInfoEntry337(Colors.grey[300], false, laneStopInfo337, 1)
+      ],
+    ),
+  );
 }
 
 Widget buildBusInfoBox(LaneStopInfo laneStopInfo) {
@@ -110,6 +137,23 @@ Widget buildBusInfoBox(LaneStopInfo laneStopInfo) {
   );
 }
 
+Widget buildBusInfoEntry337(boxcolor, title, LaneStopInfo337 laneStopInfo337, int idx) {
+  if (idx >= laneStopInfo337.stopInfoList337.length) return Container();
+  return Container(
+      height: 70,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: boxcolor),
+      child: Center(
+          child: title == true
+              ? Text(laneStopInfo337.bus
+                  .busName, style: TextStyle(fontSize: 25, color: Colors.white))
+              : buildBusInfoText(laneStopInfo337.stopInfoList337[idx]),
+      ),
+  );
+}
+
+
 Widget buildBusInfoEntry(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
   if (idx >= laneStopInfo.stopInfoList.length) return Container();
   return Container(
@@ -120,7 +164,7 @@ Widget buildBusInfoEntry(boxcolor, title, LaneStopInfo laneStopInfo, int idx) {
       child: Center(
           child: title == true
               ? Text(laneStopInfo.bus
-                  .busName) //, style: TextStyle(fontSize: 25, color: Colors.white))
+                  .busName, style: TextStyle(fontSize: 25, color: Colors.white))
               : buildBusInfoText(laneStopInfo.stopInfoList[idx]),
       ),
   );
@@ -139,4 +183,5 @@ Widget buildBusInfoText(StopInfo stopInfo){
     text = "${stopInfo.departTime!} 출발예정";
   }
   return Text(text, style: TextStyle(fontSize: 25, color: Colors.black));
+
 }

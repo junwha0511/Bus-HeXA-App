@@ -6,7 +6,7 @@ import 'package:bus_hexa/model/classes.dart';
 
 Future<List<dynamic>> getAPILaneToTracks() async {
   var response = await http
-      .get(Uri.parse('http://jhshim.ddns.net/api/lanetotracks/?format=json'));
+      .get(Uri.parse('http://bus.hexa.pro/api/lanetotracks/?format=json'));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -17,7 +17,7 @@ Future<List<dynamic>> getAPILaneToTracks() async {
 
 Future<List<dynamic>> getAPIUlsanBusArrivalInfos() async {
   var response = await http
-      .get(Uri.parse('http://jhshim.ddns.net/api/ulsanbus_arrivalinfos/?format=json'));
+      .get(Uri.parse('http://bus.hexa.pro/api/ulsanbus_arrivalinfos/?format=json'));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -28,7 +28,7 @@ Future<List<dynamic>> getAPIUlsanBusArrivalInfos() async {
 
 Future<List<dynamic>> getAPIPosOfBuses() async {
   var response = await http
-      .get(Uri.parse('http://jhshim.ddns.net/api/posofbuses/?format=json'));
+      .get(Uri.parse('http://bus.hexa.pro/api/posofbuses/?format=json'));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -39,7 +39,7 @@ Future<List<dynamic>> getAPIPosOfBuses() async {
 
 Future<List<dynamic>> getAPINodeOfLanes() async {
   var response = await http
-      .get(Uri.parse('http://jhshim.ddns.net/api/nodeoflanes/?format=json'));
+      .get(Uri.parse('http://bus.hexa.pro/api/nodeoflanes/?format=json'));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);
@@ -50,7 +50,7 @@ Future<List<dynamic>> getAPINodeOfLanes() async {
 
 Future<List<dynamic>> getAPIUlsanBusTimeTables() async {
   var response = await http
-      .get(Uri.parse('http://jhshim.ddns.net/api/ulsanbus_timetables/?format=json'));
+      .get(Uri.parse('http://bus.hexa.pro/api/ulsanbus_timetables/?format=json'));
   var statusCode = response.statusCode;
   var responseHeaders = response.headers;
   String jsonString = utf8.decode(response.bodyBytes);

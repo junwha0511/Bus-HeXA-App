@@ -12,11 +12,11 @@ class StopInfo {
   int? stopLeft;
   int? timeLeft;
   String? departTime;
+  String? busNum;
 
   String nodeName;
-  //String busName;
 
-  StopInfo({required this.nodeName, /*required this.busName*/ this.stopLeft, this.timeLeft, this.departTime});
+  StopInfo({required this.nodeName, this.busNum, this.stopLeft, this.timeLeft, this.departTime});
 }
 class LaneStopInfo {
   LaneToTracks bus;
@@ -24,7 +24,12 @@ class LaneStopInfo {
 
   LaneStopInfo({required this.bus, required this.stopInfoList});
 }
+class LaneStopInfo337 {
+  LaneToTracks bus;
+  List<StopInfo> stopInfoList337;
 
+  LaneStopInfo337({required this.bus, required this.stopInfoList337});
+}
 // Key: RouteKey, Value: LaneToTracks object
 // 각 버스의 기본적인 정보
 Future<Map<int, LaneToTracks>> constructBusNoMap() async {
@@ -35,9 +40,25 @@ Future<Map<int, LaneToTracks>> constructBusNoMap() async {
   return busNoMap;
 }
 
+Future<Map<int, List<UlsanBusArrivalInfos>>> constructBusInfoMap() async {
+  List<UlsanBusArrivalInfos> ulsanBusArrivalInfosList =
+      await getAPIUlsanBusArrivalInfos();
+  Map<int, List<UlsanBusArrivalInfos>> busInfoMap = {};
+  
+  for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
+    List<UlsanBusArrivalInfos> busInfo = ulsanBusArrivalInfosList.where((element) {
+      return element.routeKeyUsb == i;
+    }).toList();
+    busInfoMap[i] = busInfo;
+    }
+
+  return busInfoMap;
+}
+
+
 // Key: RouteKey(routeKeyUsb), Value: UlsanBusArrivalInfos object
 // 각 버스의 도착 시간 정보 (울산과학기술원 기준 도착시간 표시)
-Future<Map<int, UlsanBusArrivalInfos>> constructBusInfoMap() async {
+/*Future<Map<int, UlsanBusArrivalInfos>> constructBusInfoMap() async {
   List<UlsanBusArrivalInfos> ulsanBusArrivalInfos =
       await getAPIUlsanBusArrivalInfos();
   Map<int, UlsanBusArrivalInfos> busInfoMap = {
@@ -45,7 +66,7 @@ Future<Map<int, UlsanBusArrivalInfos>> constructBusInfoMap() async {
   };
   return busInfoMap;
 }
-
+*/
 // Key: BusNo(routeKey), Value: NodeOfLanes List
 // 각 버스의 정거장 정보
 Future<Map<int, List<NodeOfLanes>>> constructNodeOfLanesMap() async {
@@ -81,15 +102,14 @@ Future<Map<int, NodeOfLanes>> constructUNISTNodeMap() async {
   }
 
   // TODO: modify this hard code to class version
-  // unistNodeMap['233(농소차고지 방면)']?.nodeOrder = 57;
+  unistNodeMap[1]?.nodeOrder = 114;
 
   return unistNodeMap;
 }
 
-// 긱 버스의 현재 위치 (울산과학기술원과 관계 없이 현재 위치)
+// 각 버스의 현재 위치 (울산과학기술원과 관계 없이 현재 위치)
 Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   List<PosOfBuses> posOfBusesList = await getAPIPosOfBuses();
-
   Map<int, List<PosOfBuses>> posOfBusesMap = {};
   for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
     List<PosOfBuses> posOfBuses = posOfBusesList.where((element) {
@@ -102,6 +122,7 @@ Future<Map<int, List<PosOfBuses>>> constructPosMap() async {
   return posOfBusesMap;
 }
 
+
 Future<Map<int, List<UlsanBusTimeTables>>> constructTimeTablesMap() async {
   List<UlsanBusTimeTables> timeTablesList = await getAPIUlsanBusTimeTables ();
   // Map <int, LaneToTracks> busNomap = await constructBusNoMap();
@@ -109,12 +130,11 @@ Future<Map<int, List<UlsanBusTimeTables>>> constructTimeTablesMap() async {
   Map<int, List<UlsanBusTimeTables>> timeTablesMap = {};
 
   for (int i = N_BUS_MIN; i <= N_BUS_MAX; i++) {
-    List<UlsanBusTimeTables> timeTables = timeTablesList.where((element) {
+      List<UlsanBusTimeTables> timeTables = timeTablesList.where((element) {
       return element.routeKeyUsb == i;
     }).toList();
     timeTablesMap[i] = timeTables;
   }
-
   return timeTablesMap;
 }
 
@@ -127,12 +147,11 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   Map<int, NodeOfLanes> unistNodeMap = await constructUNISTNodeMap();
   Map<int, List<PosOfBuses>> posMap = await constructPosMap();
   Map<int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
-  Map<int, UlsanBusArrivalInfos> arrivalTimeInfoMap =
-      await constructBusInfoMap();
+  Map<int, List<UlsanBusArrivalInfos>> arrivalTimeInfoMap = await constructBusInfoMap();
   Map<int, List<UlsanBusTimeTables>> timeTablesMap = await constructTimeTablesMap();
   List<LaneStopInfo> laneStopInfoList = [];
 
-  for (int key = N_BUS_MIN; key <= N_BUS_MAX; key++) {
+  for (int key = 4; key <= N_BUS_MAX; key++) {
     if (unistNodeMap[key] == null) {
       print("Unexpected error for key: $key");
       continue;
@@ -140,7 +159,7 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     NodeOfLanes unistNode = unistNodeMap[key]!; // unist node info must exist
     List<NodeOfLanes> nodesOfBus = nodeOfLanesMap[key] ?? [];
     List<PosOfBuses> currentPosOfBus = posMap[key] ?? [];
-    UlsanBusArrivalInfos? arrivalTimeInfo = arrivalTimeInfoMap[key];
+    List<UlsanBusArrivalInfos> arrivalTimeInfo = arrivalTimeInfoMap[key] ?? [];
     LaneToTracks busInfo = busNoMap[key]!;
     List<UlsanBusTimeTables> timeTableInfo = timeTablesMap[key] ?? [];
 
@@ -152,7 +171,8 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
     List<StopInfo> stopLeftList = currentPosOfBus
         .map((position) => StopInfo(
             nodeName: id2Node[position.nodeId]!.nodeName,
-            stopLeft: (unistNode.nodeOrder - position.nodeOrder)))
+            stopLeft: (unistNode.nodeOrder - position.nodeOrder),
+            busNum: position.busNum))
         .where((stopInfo) => stopInfo.stopLeft! >= 0)
         .toList();
 
@@ -165,16 +185,17 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
         .map((time)=>StopInfo(nodeName: "", departTime: "${intFixed(time~/100, 2)}:${intFixed(time%100, 2)}"))
         .toList();
   
-    // time info has higher priority than stop left
-    StopInfo? timeLeft = arrivalTimeInfo == null
-        ? null
-        : StopInfo(
-            nodeName: arrivalTimeInfo.currentNodeName,
-            timeLeft: arrivalTimeInfo.arrivalTime);
+    List<StopInfo> arrivalTimeList = arrivalTimeInfo
+        .map((timeInfo) => StopInfo(
+          nodeName: timeInfo.currentNodeName,
+          timeLeft: timeInfo.arrivalTime
+        )).toList();
+
+    arrivalTimeList.sort((a,b) => a.timeLeft!.compareTo(b.timeLeft!));
 
     // stop info 
-    List<StopInfo> stopInfoList = (timeLeft == null ? [] : [timeLeft]);
-    if (timeLeft != null && stopLeftList.length > 0) stopLeftList.removeAt(0);
+    List<StopInfo> stopInfoList = (arrivalTimeList == null ? [] : arrivalTimeList);
+    if (arrivalTimeList != null && stopLeftList.length > 0) stopLeftList.removeAt(0);
     stopInfoList
         .addAll(stopLeftList);
     
@@ -194,6 +215,173 @@ Future<List<LaneStopInfo>> constructStopInfo() async {
   }
 
   return laneStopInfoList;
+}
+
+Future<List<LaneStopInfo337>> constructStopInfo337() async {
+  Map<int, LaneToTracks> busNoMap = await constructBusNoMap();
+  Map<int, NodeOfLanes> unistNodeMap = await constructUNISTNodeMap();
+  Map<int, List<PosOfBuses>> posMap = await constructPosMap();
+  Map<int, List<NodeOfLanes>> nodeOfLanesMap = await constructNodeOfLanesMap();
+  Map<int, List<UlsanBusArrivalInfos>> arrivalTimeInfoMap = await constructBusInfoMap();
+  Map<int, List<UlsanBusTimeTables>> timeTablesMap = await constructTimeTablesMap();
+  List<LaneStopInfo337> laneStopInfoList337 = [];
+  
+  for (int key = 1; key <= 3; key++) {
+    if (unistNodeMap[key] == null) {
+      print("Unexpected error for key: $key");
+      continue;
+    }
+  }
+
+    NodeOfLanes unistNode_1 = unistNodeMap[1]!; // unist node info must exist
+    NodeOfLanes unistNode_2 = unistNodeMap[2]!;
+    NodeOfLanes unistNode_3 = unistNodeMap[3]!;
+
+    List<NodeOfLanes> nodesOfBus_1 = nodeOfLanesMap[1] ?? [];
+    List<NodeOfLanes> nodesOfBus_2 = nodeOfLanesMap[2] ?? [];
+    List<NodeOfLanes> nodesOfBus_3 = nodeOfLanesMap[3] ?? [];
+
+    List<NodeOfLanes> nodesofBus_TH = nodesOfBus_3.sublist(0,32);
+    List<PosOfBuses> currentPosOfBus_1 = posMap[1] ?? [];
+    List<PosOfBuses> currentPosOfBus_2 = posMap[2] ?? [];
+    List<PosOfBuses> currentPosOfBus_3 = posMap[3] ?? [];
+
+    List<UlsanBusArrivalInfos> arrivalTimeInfo_1 = arrivalTimeInfoMap[1] ?? [];
+    List<UlsanBusArrivalInfos> arrivalTimeInfo_2 = arrivalTimeInfoMap[2] ?? [];
+    List<UlsanBusArrivalInfos> arrivalTimeInfo_3 = arrivalTimeInfoMap[3] ?? [];
+
+    LaneToTracks busInfo_1 = busNoMap[1]!;
+    LaneToTracks busInfo_2 = busNoMap[2]!;
+    LaneToTracks busInfo_3 = busNoMap[3]!;
+
+    List<UlsanBusTimeTables> timeTableInfo_1 = timeTablesMap[1] ?? [];
+    List<UlsanBusTimeTables> timeTableInfo_2 = timeTablesMap[2] ?? [];
+    List<UlsanBusTimeTables> timeTableInfo_3 = timeTablesMap[3] ?? [];
+    
+    Map<String, NodeOfLanes> id2Node_1 = {
+      for (var node in nodesOfBus_1) node.nodeId: node
+    };
+    Map<String, NodeOfLanes> id2Node_2 = {
+      for (var node in nodesOfBus_2) node.nodeId: node
+    };
+    Map<String, NodeOfLanes> id2Node_3 = {
+      for (var node in nodesOfBus_3) node.nodeId: node
+    };
+
+    // Calculate stop left by subtract current position from UNIST (337 삼남신화 방면 --역전으로 쓰임)
+    List<StopInfo> stopLeftList_1 = currentPosOfBus_1
+        .map((position) => StopInfo(
+            nodeName: id2Node_1[position.nodeId]!.nodeName,
+            stopLeft: (unistNode_1.nodeOrder - position.nodeOrder)))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+
+    List<StopInfo> stopLeftList_2 = currentPosOfBus_2
+        .map((position) => StopInfo(
+            nodeName: id2Node_2[position.nodeId]!.nodeName,
+            stopLeft: (unistNode_2.nodeOrder - position.nodeOrder)))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+
+    List<StopInfo> stopLeftList_3 = currentPosOfBus_3
+        .map((position) => StopInfo(
+            nodeName: id2Node_3[position.nodeId]!.nodeName,
+            stopLeft: (unistNode_3.nodeOrder - position.nodeOrder)))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+
+    List<StopInfo> stopLeftList_4 = currentPosOfBus_1 //(1로부터 계산)
+        .map((position) => StopInfo(
+            nodeName: id2Node_1[position.nodeId]!.nodeName,
+            stopLeft: (unistNode_3.nodeOrder - position.nodeOrder)))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+    
+    List<StopInfo> stopLeftList_SN = stopLeftList_1 + stopLeftList_2;
+    List<StopInfo> stopLeftList_TH = stopLeftList_3 + stopLeftList_4;
+
+    stopLeftList_SN.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
+    stopLeftList_TH.sort((a, b) => a.stopLeft!.compareTo(b.stopLeft!));
+
+
+
+    // Parse time table after current time
+    List<StopInfo> timeTableList_1 = timeTableInfo_1
+        .map((timeTable) => int.parse(timeTable.departTime))
+        .where((time) => time >= current_time)
+        .map((time)=>StopInfo(nodeName: "", departTime: "${intFixed(time~/100, 2)}:${intFixed(time%100, 2)}"))
+        .toList();
+    List<StopInfo> timeTableList_2 = timeTableInfo_2
+        .map((timeTable) => int.parse(timeTable.departTime))
+        .where((time) => time >= current_time)
+        .map((time)=>StopInfo(nodeName: "", departTime: "${intFixed(time~/100, 2)}:${intFixed(time%100, 2)}"))
+        .toList();
+    List<StopInfo> timeTableList_3 = timeTableInfo_3
+        .map((timeTable) => int.parse(timeTable.departTime))
+        .where((time) => time >= current_time)
+        .map((time)=>StopInfo(nodeName: "", departTime: "${intFixed(time~/100, 2)}:${intFixed(time%100, 2)}"))
+        .toList();
+
+    List<StopInfo> timeTableList_SN = timeTableList_1 + timeTableList_2;
+    List<StopInfo> timeTableList_TH = timeTableList_1 + timeTableList_3;
+
+    timeTableList_SN.sort((a, b) => a.departTime!.compareTo(b.departTime!));
+    timeTableList_TH.sort((a, b) => a.departTime!.compareTo(b.departTime!));
+  
+    List<StopInfo> arrivalTimeList_1 = arrivalTimeInfo_1 
+        .map((time) => StopInfo(
+            nodeName: id2Node_1[time.currentNodeName]!.nodeName,
+            timeLeft: time.arrivalTime,
+            stopLeft: time.prevStopCnt))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+    List<StopInfo> arrivalTimeList_2 = arrivalTimeInfo_2
+        .map((time) => StopInfo(
+            nodeName: id2Node_2[time.currentNodeName]!.nodeName,
+            timeLeft: time.arrivalTime))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();
+    List<StopInfo> arrivalTimeList_3 = arrivalTimeInfo_3
+        .map((time) => StopInfo(
+            nodeName: id2Node_1[time.currentNodeName]!.nodeName,
+            timeLeft: time.arrivalTime))
+        .where((stopInfo) => stopInfo.stopLeft! >= 0)
+        .toList();    
+    
+//337 arrivaltimeinfo 여러개 뜨는거 구현중에있음
+    // stop info 
+    List<StopInfo> stopInfoList_SN = (timeLeft_1 == null ? timeLeft_2 == null ?  [] : [timeLeft_2] : [timeLeft_1]);
+    if ((timeLeft_1 != null || timeLeft_2 != null) && stopLeftList_SN.length > 0) stopLeftList_SN.removeAt(0);
+    stopInfoList_SN
+        .addAll(stopLeftList_SN);
+
+    List<StopInfo> stopInfoList_TH = (timeLeft_3 == null ? [] : [timeLeft_3]);
+    if (timeLeft_3 != null && stopLeftList_TH.length > 0) stopLeftList_TH.removeAt(0);
+    stopInfoList_TH
+        .addAll(stopLeftList_TH);
+    
+    // time table
+    if (timeTableList_SN.length > 0) {
+      stopInfoList_SN.add(timeTableList_SN[0]);
+    }
+    if (timeTableList_SN.length > 1) {
+      stopInfoList_SN.add(timeTableList_SN[1]);
+    }
+
+    if (timeTableList_TH.length > 0) {
+      stopInfoList_TH.add(timeTableList_TH[0]);
+    }
+    if (timeTableList_TH.length > 1) {
+      stopInfoList_TH.add(timeTableList_TH[1]);
+    }
+
+    // Add to global
+    laneStopInfoList337
+        .add(LaneStopInfo337(bus: busInfo_2, stopInfoList337: stopInfoList_SN));
+    laneStopInfoList337
+        .add(LaneStopInfo337(bus: busInfo_3, stopInfoList337: stopInfoList_TH));
+
+  return laneStopInfoList337;
 }
 
 // StopInfo_1() async {
